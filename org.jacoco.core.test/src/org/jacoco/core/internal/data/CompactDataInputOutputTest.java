@@ -117,24 +117,29 @@ public class CompactDataInputOutputTest {
 	}
 
 	@Test
-	public void testIntArrayEmpty() throws IOException {
-		testIntArray();
+	public void testLongArrayEmpty() throws IOException {
+		testLongArray();
 	}
 
 	@Test
-	public void testIntArray0x08() throws IOException {
-		testIntArray(8);
+	public void testLongArray0x08() throws IOException {
+		testLongArray(8);
 	}
 
 	@Test
-	public void testIntArray() throws IOException {
-		testIntArray(0, 1, 300, Integer.MAX_VALUE);
+	public void testLongArrayIntsize() throws IOException {
+		testLongArray(0, 1, 300, Integer.MAX_VALUE);
 	}
 
-	private void testIntArray(int... values) throws IOException {
-		out.writeIntegerArray(values);
+	@Test
+	public void testLongArray() throws IOException {
+		testLongArray(0, 1, 300, Long.MAX_VALUE);
+	}
+
+	private void testLongArray(long... values) throws IOException {
+		out.writeLongArray(values);
 		out.close();
-		final int[] actual = in.readIntegerArray();
+		final long[] actual = in.readLongArray();
 		for (int i = 0; i < values.length; i++) {
 			assertEquals("Index " + i, values[i], actual[i]);
 		}

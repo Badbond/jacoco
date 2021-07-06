@@ -120,7 +120,7 @@ public class ExecFileLoaderTest {
 		final ExecutionDataWriter writer = new ExecutionDataWriter(out);
 		final int value = id.length();
 		writer.visitClassExecution(
-				new ExecutionData(value, id, new int[] { 1 }));
+				new ExecutionData(value, id, new long[] { 1 }));
 		writer.visitSessionInfo(new SessionInfo(id, value, value));
 		out.close();
 		return file;

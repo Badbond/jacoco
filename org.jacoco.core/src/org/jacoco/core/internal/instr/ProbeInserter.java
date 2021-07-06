@@ -69,52 +69,52 @@ class ProbeInserter extends MethodVisitor implements IProbeInserter {
 
 	/**
 	 * Insert bytecode (a probe) to increment the position corresponding to the
-	 * given {@code id} in the int[] array
+	 * given {@code id} in the long[] array
 	 *
 	 * @param id
 	 *            the position to increment
 	 */
 	public void insertProbe(final int id) {
-		// Retrieve the int[] containing coverage information
+		// Retrieve the long[] containing coverage information
 		mv.visitVarInsn(Opcodes.ALOAD, variable);
 
-		// Stack[0]: [I
+		// Stack[0]: [J
 		// Pushes the index of the array we want to retrieve on the stack
 		InstrSupport.push(mv, id);
 
 		// Stack[1]: I
-		// Stack[0]: [I
+		// Stack[0]: [J
 		// Duplicate the top two stack items as we want to do both lookup and
 		// storage.
 		mv.visitInsn(Opcodes.DUP2);
 
 		// Stack[3]: I
-		// Stack[2]: [I
+		// Stack[2]: [J
 		// Stack[1]: I
-		// Stack[0]: [I
-		// Lookup a value from an integer array
-		mv.visitInsn(Opcodes.IALOAD);
+		// Stack[0]: [J
+		// Lookup a value from a long array
+		mv.visitInsn(Opcodes.LALOAD);
 
-		// Stack[2]: I
+		// Stack[2]: J
 		// Stack[1]: I
-		// Stack[0]: [I
-		// Add an integer with value 1 on the stack (the value we will increment
+		// Stack[0]: [J
+		// Add a long with value 1 on the stack (the value we will increment
 		// with)
-		mv.visitInsn(Opcodes.ICONST_1);
+		mv.visitInsn(Opcodes.LCONST_1);
 
-		// Stack[3]: I
-		// Stack[2]: I
+		// Stack[3]: J
+		// Stack[2]: J
 		// Stack[1]: I
-		// Stack[0]: [I
-		// Add the value from the array and the integer with value 1
-		mv.visitInsn(Opcodes.IADD);
+		// Stack[0]: [J
+		// Add the value from the array and the long with value 1
+		mv.visitInsn(Opcodes.LADD);
 
-		// Stack[2]: I
+		// Stack[2]: J
 		// Stack[1]: I
-		// Stack[0]: [I
-		// Store the summed value in the integer array at the index which we
+		// Stack[0]: [J
+		// Store the summed value in the long array at the index which we
 		// already had on the stack
-		mv.visitInsn(Opcodes.IASTORE);
+		mv.visitInsn(Opcodes.LASTORE);
 	}
 
 	@Override
@@ -154,11 +154,12 @@ class ProbeInserter extends MethodVisitor implements IProbeInserter {
 
 	@Override
 	public void visitMaxs(final int maxStack, final int maxLocals) {
-		// Max stack size of the probe code is 4 which can add to the
-		// original stack size depending on the probe locations. The accessor
-		// stack size is an absolute maximum, as the accessor code is inserted
-		// at the very beginning of each method when the stack size is empty.
-		final int increasedStack = Math.max(maxStack + 4, accessorStackSize);
+		// Max stack size of the probe code is 6 (4 variables of which two are
+		// 64-bit) which can add to the original stack size depending on the
+		// probe locations. The accessor stack size is an absolute maximum, as
+		// the accessor code is inserted at the very beginning of each method
+		// when the stack size is empty.
+		final int increasedStack = Math.max(maxStack + 6, accessorStackSize);
 		mv.visitMaxs(increasedStack, maxLocals + 1);
 	}
 

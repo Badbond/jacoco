@@ -147,7 +147,7 @@ public class LoggerRuntime extends AbstractRuntime {
 		mv.visitInsn(Opcodes.AALOAD);
 		mv.visitTypeInsn(Opcodes.CHECKCAST, InstrSupport.DATAFIELD_DESC);
 
-		// Stack[0]: [I
+		// Stack[0]: [J
 
 		return 5; // Maximum local stack size is 5
 	}

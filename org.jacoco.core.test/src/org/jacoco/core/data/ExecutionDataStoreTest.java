@@ -54,7 +54,7 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 
 	@Test
 	public void testPut() {
-		final int[] probes = new int[] { 0, 0, 1 };
+		final long[] probes = new long[] { 0, 0, 1 };
 		store.put(new ExecutionData(1000, "Sample", probes));
 		final ExecutionData data = store.get(1000);
 		assertSame(probes, data.getProbes());
@@ -66,7 +66,7 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 
 	@Test
 	public void testReentrantAccept() {
-		final int[] probes = new int[] { 0, 0, 1 };
+		final long[] probes = new long[] { 0, 0, 1 };
 		store.put(new ExecutionData(1000, "Sample0", probes));
 		store.put(new ExecutionData(1001, "Sample1", probes));
 		store.accept(new IExecutionDataVisitor() {
@@ -80,7 +80,7 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 
 	@Test
 	public void testGetContents() {
-		final int[] probes = new int[] {};
+		final long[] probes = new long[] {};
 		final ExecutionData a = new ExecutionData(1000, "A", probes);
 		store.put(a);
 		final ExecutionData aa = new ExecutionData(1000, "A", probes);
@@ -97,7 +97,7 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 	@Test
 	public void testGetWithoutCreate() {
 		final ExecutionData data = new ExecutionData(1000, "Sample",
-				new int[] {});
+				new long[] {});
 		store.put(data);
 		assertSame(data, store.get(1000));
 	}
@@ -118,33 +118,33 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 
 	@Test(expected = IllegalStateException.class)
 	public void testGetNegative1() {
-		final int[] data = new int[] { 0, 0, 1 };
+		final long[] data = new long[] { 0, 0, 1 };
 		store.put(new ExecutionData(1000, "Sample", data));
 		store.get(Long.valueOf(1000), "Other", 3);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testGetNegative2() {
-		final int[] data = new int[] { 0, 0, 1 };
+		final long[] data = new long[] { 0, 0, 1 };
 		store.put(new ExecutionData(1000, "Sample", data));
 		store.get(Long.valueOf(1000), "Sample", 4);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testPutNegative() {
-		final int[] data = new int[0];
+		final long[] data = new long[0];
 		store.put(new ExecutionData(1000, "Sample1", data));
 		store.put(new ExecutionData(1000, "Sample2", data));
 	}
 
 	@Test
 	public void testMerge() {
-		final int[] data1 = new int[] { 0, 1, 0, 2 };
+		final long[] data1 = new long[] { 0, 1, 0, 2 };
 		store.visitClassExecution(new ExecutionData(1000, "Sample", data1));
-		final int[] data2 = new int[] { 0, 1, 2, 0 };
+		final long[] data2 = new long[] { 0, 1, 2, 0 };
 		store.visitClassExecution(new ExecutionData(1000, "Sample", data2));
 
-		final int[] result = store.get(1000).getProbes();
+		final long[] result = store.get(1000).getProbes();
 		assertEquals(0, result[0]);
 		assertEquals(2, result[1]);
 		assertEquals(2, result[2]);
@@ -153,20 +153,20 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 
 	@Test(expected = IllegalStateException.class)
 	public void testMergeNegative() {
-		final int[] data1 = new int[] { 0, 0 };
+		final long[] data1 = new long[] { 0, 0 };
 		store.visitClassExecution(new ExecutionData(1000, "Sample", data1));
-		final int[] data2 = new int[] { 0, 0, 0 };
+		final long[] data2 = new long[] { 0, 0, 0 };
 		store.visitClassExecution(new ExecutionData(1000, "Sample", data2));
 	}
 
 	@Test
 	public void testSubtract() {
-		final int[] data1 = new int[] { 0, 1, 0, 2 };
+		final long[] data1 = new long[] { 0, 1, 0, 2 };
 		store.put(new ExecutionData(1000, "Sample", data1));
-		final int[] data2 = new int[] { 0, 0, 1, 2 };
+		final long[] data2 = new long[] { 0, 0, 1, 2 };
 		store.subtract(new ExecutionData(1000, "Sample", data2));
 
-		final int[] result = store.get(1000).getProbes();
+		final long[] result = store.get(1000).getProbes();
 		assertEquals(0, result[0]);
 		assertEquals(1, result[1]);
 		assertEquals(0, result[2]);
@@ -175,12 +175,12 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 
 	@Test
 	public void testSubtractOtherId() {
-		final int[] data1 = new int[] { 0, 1 };
+		final long[] data1 = new long[] { 0, 1 };
 		store.put(new ExecutionData(1000, "Sample1", data1));
-		final int[] data2 = new int[] { 1, 1 };
+		final long[] data2 = new long[] { 1, 1 };
 		store.subtract(new ExecutionData(2000, "Sample2", data2));
 
-		final int[] result = store.get(1000).getProbes();
+		final long[] result = store.get(1000).getProbes();
 		assertEquals(0, result[0]);
 		assertEquals(1, result[1]);
 
@@ -189,16 +189,16 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 
 	@Test
 	public void testSubtractStore() {
-		final int[] data1 = new int[] { 0, 1, 0, 2 };
+		final long[] data1 = new long[] { 0, 1, 0, 2 };
 		store.put(new ExecutionData(1000, "Sample", data1));
 
 		final ExecutionDataStore store2 = new ExecutionDataStore();
-		final int[] data2 = new int[] { 0, 0, 1, 2 };
+		final long[] data2 = new long[] { 0, 0, 1, 2 };
 		store2.put(new ExecutionData(1000, "Sample", data2));
 
 		store.subtract(store2);
 
-		final int[] result = store.get(1000).getProbes();
+		final long[] result = store.get(1000).getProbes();
 		assertEquals(0, result[0]);
 		assertEquals(1, result[1]);
 		assertEquals(0, result[2]);
@@ -208,10 +208,10 @@ public class ExecutionDataStoreTest implements IExecutionDataVisitor {
 	@Test
 	public void testReset()
 			throws InstantiationException, IllegalAccessException {
-		final int[] data1 = new int[] { 1, 2, 0 };
+		final long[] data1 = new long[] { 1, 2, 0 };
 		store.put(new ExecutionData(1000, "Sample", data1));
 		store.reset();
-		final int[] data2 = store.get(1000).getProbes();
+		final long[] data2 = store.get(1000).getProbes();
 		assertNotNull(data2);
 		assertEquals(0, data2[0]);
 		assertEquals(0, data2[1]);

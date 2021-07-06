@@ -67,10 +67,10 @@ public class ProbeInserterTest {
 		expectedVisitor.visitVarInsn(Opcodes.ALOAD, 0);
 		expectedVisitor.visitInsn(Opcodes.ICONST_0);
 		expectedVisitor.visitInsn(Opcodes.DUP2);
-		expectedVisitor.visitInsn(Opcodes.IALOAD);
-		expectedVisitor.visitInsn(Opcodes.ICONST_1);
-		expectedVisitor.visitInsn(Opcodes.IADD);
-		expectedVisitor.visitInsn(Opcodes.IASTORE);
+		expectedVisitor.visitInsn(Opcodes.LALOAD);
+		expectedVisitor.visitInsn(Opcodes.LCONST_1);
+		expectedVisitor.visitInsn(Opcodes.LADD);
+		expectedVisitor.visitInsn(Opcodes.LASTORE);
 	}
 
 	@Test
@@ -82,10 +82,10 @@ public class ProbeInserterTest {
 		expectedVisitor.visitVarInsn(Opcodes.ALOAD, 1);
 		expectedVisitor.visitInsn(Opcodes.ICONST_0);
 		expectedVisitor.visitInsn(Opcodes.DUP2);
-		expectedVisitor.visitInsn(Opcodes.IALOAD);
-		expectedVisitor.visitInsn(Opcodes.ICONST_1);
-		expectedVisitor.visitInsn(Opcodes.IADD);
-		expectedVisitor.visitInsn(Opcodes.IASTORE);
+		expectedVisitor.visitInsn(Opcodes.LALOAD);
+		expectedVisitor.visitInsn(Opcodes.LCONST_1);
+		expectedVisitor.visitInsn(Opcodes.LADD);
+		expectedVisitor.visitInsn(Opcodes.LASTORE);
 	}
 
 	@Test
@@ -97,10 +97,10 @@ public class ProbeInserterTest {
 		expectedVisitor.visitVarInsn(Opcodes.ALOAD, 4);
 		expectedVisitor.visitInsn(Opcodes.ICONST_0);
 		expectedVisitor.visitInsn(Opcodes.DUP2);
-		expectedVisitor.visitInsn(Opcodes.IALOAD);
-		expectedVisitor.visitInsn(Opcodes.ICONST_1);
-		expectedVisitor.visitInsn(Opcodes.IADD);
-		expectedVisitor.visitInsn(Opcodes.IASTORE);
+		expectedVisitor.visitInsn(Opcodes.LALOAD);
+		expectedVisitor.visitInsn(Opcodes.LCONST_1);
+		expectedVisitor.visitInsn(Opcodes.LADD);
+		expectedVisitor.visitInsn(Opcodes.LASTORE);
 	}
 
 	@Test
@@ -112,10 +112,10 @@ public class ProbeInserterTest {
 		expectedVisitor.visitVarInsn(Opcodes.ALOAD, 5);
 		expectedVisitor.visitInsn(Opcodes.ICONST_0);
 		expectedVisitor.visitInsn(Opcodes.DUP2);
-		expectedVisitor.visitInsn(Opcodes.IALOAD);
-		expectedVisitor.visitInsn(Opcodes.ICONST_1);
-		expectedVisitor.visitInsn(Opcodes.IADD);
-		expectedVisitor.visitInsn(Opcodes.IASTORE);
+		expectedVisitor.visitInsn(Opcodes.LALOAD);
+		expectedVisitor.visitInsn(Opcodes.LCONST_1);
+		expectedVisitor.visitInsn(Opcodes.LADD);
+		expectedVisitor.visitInsn(Opcodes.LASTORE);
 	}
 
 	@Test
@@ -228,7 +228,7 @@ public class ProbeInserterTest {
 		pi.visitMaxs(0, 8);
 
 		expectedVisitor.visitLdcInsn("init");
-		expectedVisitor.visitMaxs(5, 9);
+		expectedVisitor.visitMaxs(6, 9);
 	}
 
 	@Test
@@ -239,7 +239,7 @@ public class ProbeInserterTest {
 		pi.visitMaxs(10, 8);
 
 		expectedVisitor.visitLdcInsn("init");
-		expectedVisitor.visitMaxs(14, 9);
+		expectedVisitor.visitMaxs(16, 9);
 	}
 
 	@Test
@@ -252,7 +252,7 @@ public class ProbeInserterTest {
 				new Object[0]);
 
 		expectedVisitor.visitFrame(Opcodes.F_NEW, 4,
-				new Object[] { "Foo", Opcodes.LONG, "[I", "java/lang/String" },
+				new Object[] { "Foo", Opcodes.LONG, "[J", "java/lang/String" },
 				0, new Object[0]);
 	}
 
@@ -263,7 +263,7 @@ public class ProbeInserterTest {
 
 		pi.visitFrame(Opcodes.F_NEW, 0, new Object[] {}, 0, new Object[0]);
 
-		expectedVisitor.visitFrame(Opcodes.F_NEW, 1, new Object[] { "[I" }, 0,
+		expectedVisitor.visitFrame(Opcodes.F_NEW, 1, new Object[] { "[J" }, 0,
 				new Object[0]);
 	}
 
@@ -276,7 +276,7 @@ public class ProbeInserterTest {
 				0, new Object[0]);
 
 		expectedVisitor.visitFrame(Opcodes.F_NEW, 3,
-				new Object[] { "[I", Opcodes.DOUBLE, "Foo" }, 0, new Object[0]);
+				new Object[] { "[J", Opcodes.DOUBLE, "Foo" }, 0, new Object[0]);
 	}
 
 	@Test
@@ -288,7 +288,7 @@ public class ProbeInserterTest {
 
 		// The locals in this frame are filled with TOP up to the probe variable
 		expectedVisitor.visitFrame(Opcodes.F_NEW, 2,
-				new Object[] { Opcodes.TOP, "[I", }, 0, new Object[] {});
+				new Object[] { Opcodes.TOP, "[J", }, 0, new Object[] {});
 	}
 
 	@Test
@@ -300,7 +300,7 @@ public class ProbeInserterTest {
 
 		// The locals in this frame are filled with TOP up to the probe variable
 		expectedVisitor.visitFrame(Opcodes.F_NEW, 3,
-				new Object[] { Opcodes.TOP, Opcodes.TOP, "[I", }, 0,
+				new Object[] { Opcodes.TOP, Opcodes.TOP, "[J", }, 0,
 				new Object[] {});
 	}
 
@@ -316,7 +316,7 @@ public class ProbeInserterTest {
 		expectedVisitor
 				.visitFrame(
 						Opcodes.F_NEW, 5, new Object[] { Opcodes.DOUBLE,
-								Opcodes.TOP, Opcodes.TOP, Opcodes.TOP, "[I", },
+								Opcodes.TOP, Opcodes.TOP, Opcodes.TOP, "[J", },
 						0, new Object[] {});
 	}
 

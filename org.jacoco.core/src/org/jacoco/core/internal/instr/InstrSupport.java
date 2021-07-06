@@ -76,9 +76,9 @@ public final class InstrSupport {
 
 	/**
 	 * Data type of the field that stores coverage information for a class (
-	 * <code>int[]</code>).
+	 * <code>long[]</code>).
 	 */
-	public static final String DATAFIELD_DESC = "[I";
+	public static final String DATAFIELD_DESC = "[J";
 
 	// === Init Method ===
 
@@ -90,7 +90,7 @@ public final class InstrSupport {
 	/**
 	 * Descriptor of the initialization method.
 	 */
-	public static final String INITMETHOD_DESC = "()[I";
+	public static final String INITMETHOD_DESC = "()[J";
 
 	/**
 	 * Access modifiers of the initialization method.

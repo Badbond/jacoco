@@ -103,7 +103,7 @@ public class ExecutionDataWriter
 				out.writeByte(BLOCK_EXECUTIONDATA);
 				out.writeLong(data.getId());
 				out.writeUTF(data.getName());
-				out.writeIntegerArray(data.getProbes());
+				out.writeLongArray(data.getProbes());
 			} catch (final IOException e) {
 				throw new RuntimeException(e);
 			}

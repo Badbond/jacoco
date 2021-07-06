@@ -82,18 +82,17 @@ public class CompactDataOutput extends DataOutputStream {
 	}
 
 	/**
-	 * Writes an integer array. Internally a sequence of int values is packed
-	 * into a variable length integer ending with a 0x80 byte.
+	 * Writes a long array.
 	 *
 	 * @param value
-	 *            integer array
+	 *            long array
 	 * @throws IOException
 	 *             if thrown by the underlying stream
 	 */
-	public void writeIntegerArray(final int[] value) throws IOException {
+	public void writeLongArray(final long[] value) throws IOException {
 		writeVarInt(value.length);
-		for (final int i : value) {
-			writeVarInt(i);
+		for (final long i : value) {
+			writeLong(i);
 		}
 	}
 }

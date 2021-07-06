@@ -29,7 +29,7 @@ import org.jacoco.core.analysis.ICounter;
  * created. In correspondence with the CFG these instances are linked with each
  * other with the <code>addBranch()</code> methods. The executions count is
  * either directly derived from a probe which has been inserted in the execution
- * flow ({@link #addBranch(int, int)}) or indirectly propagated along the CFG
+ * flow ({@link #addBranch(long, int)}) or indirectly propagated along the CFG
  * edges ({@link #addBranch(Instruction, int)}).
  *
  * <h2>Step 2: Querying the Coverage Status</h2>
@@ -58,7 +58,7 @@ public class Instruction {
 
 	private int branches;
 
-	private final Map<Integer, Integer> coveredBranches;
+	private final Map<Integer, Long> coveredBranches;
 
 	private Instruction predecessor;
 
@@ -73,7 +73,7 @@ public class Instruction {
 	public Instruction(final int line) {
 		this.line = line;
 		this.branches = 0;
-		this.coveredBranches = new HashMap<Integer, Integer>();
+		this.coveredBranches = new HashMap<Integer, Long>();
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class Instruction {
 	 * @param branch
 	 *            branch identifier unique for this instruction
 	 */
-	public void addBranch(final int executionCount, final int branch) {
+	public void addBranch(final long executionCount, final int branch) {
 		branches++;
 		if (executionCount > 0) {
 			propagateExecutedBranch(this, branch, executionCount);
@@ -126,7 +126,7 @@ public class Instruction {
 	}
 
 	private static void propagateExecutedBranch(Instruction insn, int branch,
-			int count) {
+			long count) {
 		// No recursion here, as there can be very long chains of instructions
 		while (insn != null) {
 			if (!insn.coveredBranches.isEmpty()) {
@@ -135,7 +135,7 @@ public class Instruction {
 				// set it to the max of the value that we already have or the
 				// value that is coming in from upstream. Otherwise, we will
 				// count more executions than actually happened.
-				Integer existing = insn.coveredBranches.get(branch);
+				Long existing = insn.coveredBranches.get(branch);
 				insn.coveredBranches.put(branch,
 						existing == null ? count : Math.max(existing, count));
 				break;
@@ -168,7 +168,7 @@ public class Instruction {
 		result.branches = this.branches;
 		result.coveredBranches.putAll(this.coveredBranches);
 
-		for (Map.Entry<Integer, Integer> entry : other.coveredBranches
+		for (Map.Entry<Integer, Long> entry : other.coveredBranches
 				.entrySet()) {
 			if (result.coveredBranches.containsKey(entry.getKey())) {
 				// We have already covered the branch before so we need
@@ -245,14 +245,14 @@ public class Instruction {
 	 *
 	 * @return the instruction execution count
 	 */
-	public int getExecutionCount() {
+	public long getExecutionCount() {
 		return coveredBranches.isEmpty() ? 0
 				: getListSum(coveredBranches.values());
 	}
 
-	private int getListSum(Collection<Integer> list) {
+	private long getListSum(Collection<Long> list) {
 		int sum = 0;
-		for (int value : list) {
+		for (long value : list) {
 			sum += value;
 		}
 		return sum;

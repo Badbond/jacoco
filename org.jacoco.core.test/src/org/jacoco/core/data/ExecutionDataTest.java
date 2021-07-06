@@ -37,7 +37,7 @@ public class ExecutionDataTest {
 
 	@Test
 	public void testGetters() {
-		final int[] data = new int[0];
+		final long[] data = new long[0];
 		final ExecutionData e = new ExecutionData(5, "Example", data);
 		assertEquals(5, e.getId());
 		assertEquals("Example", e.getName());
@@ -47,7 +47,7 @@ public class ExecutionDataTest {
 	@Test
 	public void testReset() {
 		final ExecutionData e = new ExecutionData(5, "Example",
-				new int[] { 1, 0, 2 });
+				new long[] { 1, 0, 2 });
 		e.reset();
 		assertEquals(0, e.getProbes()[0]);
 		assertEquals(0, e.getProbes()[1]);
@@ -56,7 +56,7 @@ public class ExecutionDataTest {
 
 	@Test
 	public void testHasHits() {
-		final int[] probes = new int[] { 0, 0, 0 };
+		final long[] probes = new long[] { 0, 0, 0 };
 		final ExecutionData e = new ExecutionData(5, "Example", probes);
 		assertFalse(e.hasHits());
 		probes[1] = 1;
@@ -65,7 +65,7 @@ public class ExecutionDataTest {
 
 	@Test
 	public void testHasHits_empty() {
-		final int[] probes = new int[] {};
+		final long[] probes = new long[] {};
 		final ExecutionData e = new ExecutionData(5, "Example", probes);
 		assertFalse(e.hasHits());
 	}
@@ -73,9 +73,9 @@ public class ExecutionDataTest {
 	@Test
 	public void testMerge() {
 		final ExecutionData a = new ExecutionData(5, "Example",
-				new int[] { 0, 1, 0, 2 });
+				new long[] { 0, 1, 0, 2 });
 		final ExecutionData b = new ExecutionData(5, "Example",
-				new int[] { 0, 0, 1, 2 });
+				new long[] { 0, 0, 1, 2 });
 		a.merge(b);
 
 		// b is merged into a:
@@ -94,9 +94,9 @@ public class ExecutionDataTest {
 	@Test
 	public void testMergeSubtract() {
 		final ExecutionData a = new ExecutionData(5, "Example",
-				new int[] { 0, 1, 0, 2 });
+				new long[] { 0, 1, 0, 2 });
 		final ExecutionData b = new ExecutionData(5, "Example",
-				new int[] { 0, 0, 1, 2 });
+				new long[] { 0, 0, 1, 2 });
 		a.merge(b, false);
 
 		// b is subtracted from a:
@@ -115,35 +115,35 @@ public class ExecutionDataTest {
 	@Test
 	public void testAssertCompatibility() {
 		final ExecutionData a = new ExecutionData(5, "Example",
-				new int[] { 1 });
+				new long[] { 1 });
 		a.assertCompatibility(5, "Example", 1);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testAssertCompatibilityNegative1() {
 		final ExecutionData a = new ExecutionData(5, "Example",
-				new int[] { 1 });
+				new long[] { 1 });
 		a.assertCompatibility(55, "Example", 1);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testAssertCompatibilityNegative2() {
 		final ExecutionData a = new ExecutionData(5, "Example",
-				new int[] { 1 });
+				new long[] { 1 });
 		a.assertCompatibility(5, "Exxxample", 1);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testAssertCompatibilityNegative3() {
 		final ExecutionData a = new ExecutionData(5, "Example",
-				new int[] { 1 });
+				new long[] { 1 });
 		a.assertCompatibility(5, "Example", 3);
 	}
 
 	@Test
 	public void testToString() {
 		final ExecutionData a = new ExecutionData(Long.MAX_VALUE, "Example",
-				new int[] { 1 });
+				new long[] { 1 });
 		assertEquals("ExecutionData[name=Example, id=7fffffffffffffff]",
 				a.toString());
 	}

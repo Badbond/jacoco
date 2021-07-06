@@ -265,7 +265,7 @@ public class AgentTest implements IExceptionLogger, IAgentOutput {
 	@Test
 	public void reset_should_reset_probes() {
 		Agent agent = createAgent();
-		int[] probes = agent.getData()
+		long[] probes = agent.getData()
 				.getExecutionData(Long.valueOf(0x12345678), "Foo", 1)
 				.getProbes();
 		probes[0] = 1;
@@ -298,7 +298,7 @@ public class AgentTest implements IExceptionLogger, IAgentOutput {
 			throws Exception {
 		Agent agent = createAgent();
 		agent.startup();
-		final int[] probes = agent.getData()
+		final long[] probes = agent.getData()
 				.getExecutionData(Long.valueOf(0x12345678), "Foo", 1)
 				.getProbes();
 		probes[0] = 1;
@@ -313,7 +313,7 @@ public class AgentTest implements IExceptionLogger, IAgentOutput {
 			throws Exception {
 		Agent agent = createAgent();
 		agent.startup();
-		final int[] probes = agent.getData()
+		final long[] probes = agent.getData()
 				.getExecutionData(Long.valueOf(0x12345678), "Foo", 1)
 				.getProbes();
 		probes[0] = 1;

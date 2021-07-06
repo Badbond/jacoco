@@ -70,16 +70,16 @@ public class CompactDataInput extends DataInputStream {
 	}
 
 	/**
-	 * Reads an integer array.
+	 * Reads a long array.
 	 *
-	 * @return integer array
+	 * @return long array
 	 * @throws IOException
 	 *             if thrown by the underlying stream
 	 */
-	public int[] readIntegerArray() throws IOException {
-		final int[] value = new int[readVarInt()];
+	public long[] readLongArray() throws IOException {
+		final long[] value = new long[readVarInt()];
 		for (int i = 0; i < value.length; i++) {
-			value[i] = readVarInt();
+			value[i] = readLong();
 		}
 		return value;
 	}

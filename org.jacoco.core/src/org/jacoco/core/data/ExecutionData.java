@@ -27,7 +27,7 @@ public final class ExecutionData {
 
 	private final String name;
 
-	private final int[] probes;
+	private final long[] probes;
 
 	/**
 	 * Creates a new {@link ExecutionData} object with the given probe data.
@@ -39,7 +39,8 @@ public final class ExecutionData {
 	 * @param probes
 	 *            probe data
 	 */
-	public ExecutionData(final long id, final String name, final int[] probes) {
+	public ExecutionData(final long id, final String name,
+			final long[] probes) {
 		this.id = id;
 		this.name = name;
 		this.probes = probes;
@@ -60,7 +61,7 @@ public final class ExecutionData {
 			final int probeCount) {
 		this.id = id;
 		this.name = name;
-		this.probes = new int[probeCount];
+		this.probes = new long[probeCount];
 	}
 
 	/**
@@ -88,7 +89,7 @@ public final class ExecutionData {
 	 *
 	 * @return probe data
 	 */
-	public int[] getProbes() {
+	public long[] getProbes() {
 		return probes;
 	}
 
@@ -105,7 +106,7 @@ public final class ExecutionData {
 	 * @return <code>true</code>, if at least one probe has been hit
 	 */
 	public boolean hasHits() {
-		for (final int p : probes) {
+		for (final long p : probes) {
 			if (p > 0) {
 				return true;
 			}
@@ -158,9 +159,9 @@ public final class ExecutionData {
 	public void merge(final ExecutionData other, final boolean flag) {
 		assertCompatibility(other.getId(), other.getName(),
 				other.getProbes().length);
-		final int[] otherData = other.getProbes();
+		final long[] otherData = other.getProbes();
 		for (int i = 0; i < probes.length; i++) {
-			int otherProbe = otherData[i];
+			long otherProbe = otherData[i];
 			if (otherProbe > 0) {
 				if (flag) {
 					probes[i] += otherProbe;

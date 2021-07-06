@@ -82,9 +82,9 @@ public class ExecInfo extends Command {
 		out.println();
 	}
 
-	private int getHitCount(final int[] data) {
+	private int getHitCount(final long[] data) {
 		int count = 0;
-		for (final int hit : data) {
+		for (final long hit : data) {
 			if (hit > 0) {
 				count++;
 			}

@@ -80,7 +80,7 @@ public class Analyzer {
 	private ClassVisitor createAnalyzingVisitor(final long classid,
 			final String className) {
 		final ExecutionData data = executionData.get(classid);
-		final int[] probes;
+		final long[] probes;
 		final boolean noMatch;
 		if (data == null) {
 			probes = null;

@@ -44,7 +44,7 @@ public class MethodAnalyzerTest implements IProbeIdGenerator {
 
 	private int nextProbeId;
 
-	private int[] probes;
+	private long[] probes;
 
 	private MethodNode method;
 
@@ -55,7 +55,7 @@ public class MethodAnalyzerTest implements IProbeIdGenerator {
 		nextProbeId = 0;
 		method = new MethodNode();
 		method.tryCatchBlocks = new ArrayList<TryCatchBlockNode>();
-		probes = new int[32];
+		probes = new long[32];
 	}
 
 	public int nextId() {

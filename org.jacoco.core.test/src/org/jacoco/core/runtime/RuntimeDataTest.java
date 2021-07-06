@@ -56,10 +56,10 @@ public class RuntimeDataTest {
 				Integer.valueOf(3) };
 		data.equals(args);
 
-		assertEquals(3, ((int[]) args[0]).length);
+		assertEquals(3, ((long[]) args[0]).length);
 
 		data.collect(storage, storage, false);
-		int[] data = (int[]) args[0];
+		long[] data = (long[]) args[0];
 		assertEquals(3, data.length, 0.0);
 		assertEquals(0, data[0]);
 		assertEquals(0, data[1]);
@@ -77,7 +77,7 @@ public class RuntimeDataTest {
 	@Test
 	public void testCollectWithReset() {
 		data.setSessionId("testsession");
-		int[] probes = data.getExecutionData(Long.valueOf(123), "Foo", 1)
+		long[] probes = data.getExecutionData(Long.valueOf(123), "Foo", 1)
 				.getProbes();
 		probes[0] = 1;
 
@@ -90,7 +90,7 @@ public class RuntimeDataTest {
 	@Test
 	public void testCollectWithoutReset() {
 		data.setSessionId("testsession");
-		int[] probes = data.getExecutionData(Long.valueOf(123), "Foo", 1)
+		long[] probes = data.getExecutionData(Long.valueOf(123), "Foo", 1)
 				.getProbes();
 		probes[0] = 1;
 
@@ -150,7 +150,7 @@ public class RuntimeDataTest {
 
 	@Test
 	public void testGenerateAccessCall() throws Exception {
-		final int[] probes = data
+		final long[] probes = data
 				.getExecutionData(Long.valueOf(1234), "Sample", 5).getProbes();
 
 		final ClassWriter writer = new ClassWriter(0);

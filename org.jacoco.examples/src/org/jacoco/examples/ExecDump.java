@@ -72,7 +72,7 @@ public final class ExecDump {
 			public void visitClassExecution(final ExecutionData data) {
 				out.printf("%016x  %3d of %3d   %s%n",
 						Long.valueOf(data.getId()),
-						Integer.valueOf(getHitCount(data.getProbes())),
+						Long.valueOf(getHitCount(data.getProbes())),
 						Integer.valueOf(data.getProbes().length),
 						data.getName());
 			}
@@ -82,9 +82,9 @@ public final class ExecDump {
 		out.println();
 	}
 
-	private int getHitCount(final int[] data) {
+	private int getHitCount(final long[] data) {
 		int count = 0;
-		for (final int hit : data) {
+		for (final long hit : data) {
 			if (hit > 0) {
 				count++;
 			}

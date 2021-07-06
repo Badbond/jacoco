@@ -50,5 +50,5 @@ public interface ILine {
 	 *
 	 * @return execution count
 	 */
-	int getExecutionCount();
+	long getExecutionCount();
 }

@@ -31,7 +31,7 @@ import org.objectweb.asm.tree.AbstractInsnNode;
 class InstructionsBuilder {
 
 	/** Probe array of the class the analyzed method belongs to. */
-	private final int[] probes;
+	private final long[] probes;
 
 	/** The line which belong to subsequently added instructions. */
 	private int currentLine;
@@ -66,7 +66,7 @@ class InstructionsBuilder {
 	 *            probe array of the corresponding class used to determine the
 	 *            coverage status of every instruction.
 	 */
-	InstructionsBuilder(final int[] probes) {
+	InstructionsBuilder(final long[] probes) {
 		this.probes = probes;
 		this.currentLine = ISourceNode.UNKNOWN_LINE;
 		this.currentInsn = null;
@@ -146,7 +146,7 @@ class InstructionsBuilder {
 	 *            unique branch number for the last instruction
 	 */
 	void addProbe(final int probeId, final int branch) {
-		final int executionCount = probes == null ? 0 : probes[probeId];
+		final long executionCount = probes == null ? 0 : probes[probeId];
 		currentInsn.addBranch(executionCount, branch);
 	}
 

@@ -55,7 +55,7 @@ public abstract class LineImpl implements ILine {
 	public static final LineImpl EMPTY = SINGLETONS[0][0][0][0][0];
 
 	private static LineImpl getInstance(final CounterImpl instructions,
-			final int ec, final CounterImpl branches) {
+			final long ec, final CounterImpl branches) {
 		final int im = instructions.getMissedCount();
 		final int ic = instructions.getCoveredCount();
 		final int bm = branches.getMissedCount();
@@ -63,7 +63,7 @@ public abstract class LineImpl implements ILine {
 		if (im <= SINGLETON_INS_LIMIT && ic <= SINGLETON_INS_LIMIT
 				&& bm <= SINGLETON_BRA_LIMIT && bc <= SINGLETON_BRA_LIMIT
 				&& ec <= SINGLETON_INS_LIMIT) {
-			return SINGLETONS[im][ic][ec][bm][bc];
+			return SINGLETONS[im][ic][(int) ec][bm][bc];
 		}
 		return new Var(instructions, ec, branches);
 	}
@@ -72,14 +72,14 @@ public abstract class LineImpl implements ILine {
 	 * Mutable version.
 	 */
 	private static final class Var extends LineImpl {
-		Var(final CounterImpl instructions, final int executions,
+		Var(final CounterImpl instructions, final long executions,
 				final CounterImpl branches) {
 			super(instructions, executions, branches);
 		}
 
 		@Override
 		public LineImpl increment(final ICounter instructions,
-				final int executions, final ICounter branches) {
+				final long executions, final ICounter branches) {
 			this.instructions = this.instructions.increment(instructions);
 			// Set the amount of execution on this line on the max between
 			// the current executions and those to increment with.
@@ -93,7 +93,7 @@ public abstract class LineImpl implements ILine {
 	 * Immutable version.
 	 */
 	private static final class Fix extends LineImpl {
-		public Fix(final int im, final int ic, final int ec, final int bm,
+		public Fix(final int im, final int ic, final long ec, final int bm,
 				final int bc) {
 			super(CounterImpl.getInstance(im, ic), ec,
 					CounterImpl.getInstance(bm, bc));
@@ -101,7 +101,7 @@ public abstract class LineImpl implements ILine {
 
 		@Override
 		public LineImpl increment(final ICounter instructions,
-				final int executions, final ICounter branches) {
+				final long executions, final ICounter branches) {
 			return getInstance(this.instructions.increment(instructions),
 					Math.max(this.executions, executions),
 					this.branches.increment(branches));
@@ -112,12 +112,12 @@ public abstract class LineImpl implements ILine {
 	protected CounterImpl instructions;
 
 	/** execution count */
-	protected int executions;
+	protected long executions;
 
 	/** branch counter */
 	protected CounterImpl branches;
 
-	private LineImpl(final CounterImpl instructions, final int executions,
+	private LineImpl(final CounterImpl instructions, final long executions,
 			final CounterImpl branches) {
 		this.instructions = instructions;
 		this.executions = executions;
@@ -136,7 +136,7 @@ public abstract class LineImpl implements ILine {
 	 * @return instance with new counter values
 	 */
 	public abstract LineImpl increment(final ICounter instructions,
-			final int executions, final ICounter branches);
+			final long executions, final ICounter branches);
 
 	// === ILine implementation ===
 
@@ -148,7 +148,7 @@ public abstract class LineImpl implements ILine {
 		return instructions;
 	}
 
-	public int getExecutionCount() {
+	public long getExecutionCount() {
 		return executions;
 	}
 
@@ -160,7 +160,7 @@ public abstract class LineImpl implements ILine {
 	public int hashCode() {
 		int hash = 7;
 		hash = 31 * hash + instructions.hashCode();
-		hash = 31 * hash + executions;
+		hash = 31 * hash + Long.valueOf(executions).hashCode();
 		hash = 31 * hash + branches.hashCode();
 		return hash;
 	}
