@@ -78,43 +78,42 @@ class ProbeInserter extends MethodVisitor implements IProbeInserter {
 		// Retrieve the int[] containing coverage information
 		mv.visitVarInsn(Opcodes.ALOAD, variable);
 
-		// Stack[0]: [I
+		// Stack[0]: [Ljava/math/BigInteger;
 		// Pushes the index of the array we want to retrieve on the stack
 		InstrSupport.push(mv, id);
 
 		// Stack[1]: I
-		// Stack[0]: [I
+		// Stack[0]: [Ljava/math/BigInteger;
 		// Duplicate the top two stack items as we want to do both lookup and
 		// storage.
 		mv.visitInsn(Opcodes.DUP2);
 
 		// Stack[3]: I
-		// Stack[2]: [I
+		// Stack[2]: [Ljava/math/BigInteger;
 		// Stack[1]: I
-		// Stack[0]: [I
+		// Stack[0]: [Ljava/math/BigInteger;
 		// Lookup a value from an integer array
-		mv.visitInsn(Opcodes.IALOAD);
+		mv.visitInsn(Opcodes.AALOAD);
 
-		// Stack[2]: I
+		// Stack[2]: Ljava/math/BigInteger;
 		// Stack[1]: I
-		// Stack[0]: [I
-		// Add an integer with value 1 on the stack (the value we will increment
-		// with)
-		mv.visitInsn(Opcodes.ICONST_1);
+		// Stack[0]: [Ljava/math/BigInteger;
+		// Add BigInteger.ONE on the stack
+		mv.visitFieldInsn(Opcodes.GETSTATIC, "java/math/BigInteger", "ONE", "Ljava/math/BigInteger;");
 
-		// Stack[3]: I
-		// Stack[2]: I
+		// Stack[3]: Ljava/math/BigInteger;
+		// Stack[2]: Ljava/math/BigInteger;
 		// Stack[1]: I
-		// Stack[0]: [I
-		// Add the value from the array and the integer with value 1
-		mv.visitInsn(Opcodes.IADD);
+		// Stack[0]: [Ljava/math/BigInteger;
+		// Increment the value in the array
+		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/math/BigInteger", "ADD", "(L/java/math/BigInteger;)L/java/math/BigInteger;", false);
 
-		// Stack[2]: I
+		// Stack[3]: Ljava/math/BigInteger;
 		// Stack[1]: I
-		// Stack[0]: [I
+		// Stack[0]: [Ljava/math/BigInteger;
 		// Store the summed value in the integer array at the index which we
 		// already had on the stack
-		mv.visitInsn(Opcodes.IASTORE);
+		mv.visitInsn(Opcodes.AASTORE);
 	}
 
 	@Override
@@ -158,7 +157,7 @@ class ProbeInserter extends MethodVisitor implements IProbeInserter {
 		// original stack size depending on the probe locations. The accessor
 		// stack size is an absolute maximum, as the accessor code is inserted
 		// at the very beginning of each method when the stack size is empty.
-		final int increasedStack = Math.max(maxStack + 4, accessorStackSize);
+		final int increasedStack = Math.max(maxStack + 6, accessorStackSize);
 		mv.visitMaxs(increasedStack, maxLocals + 1);
 	}
 
