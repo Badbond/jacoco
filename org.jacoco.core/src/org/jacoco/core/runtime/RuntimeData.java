@@ -212,8 +212,8 @@ public class RuntimeData {
 	 * Generates the code that calls a {@link RuntimeData} instance through the
 	 * JRE API method {@link Object#equals(Object)}. The code pops a
 	 * {@link Object} instance from the stack and pushes the probe array of type
-	 * <code>int[]</code> on the operand stack. The generated code requires a
-	 * stack size of 6.
+	 * <code>BigInteger[]</code> on the operand stack. The generated code
+	 * requires a stack size of 6.
 	 *
 	 * @param classid
 	 *            class identifier
@@ -249,7 +249,7 @@ public class RuntimeData {
 		mv.visitInsn(Opcodes.ICONST_0);
 		mv.visitInsn(Opcodes.AALOAD);
 
-		// stack[0]: [I
+		// stack[0]: [Ljava/math/BigInteger;
 
 		mv.visitTypeInsn(Opcodes.CHECKCAST, InstrSupport.DATAFIELD_DESC);
 	}

@@ -17,6 +17,7 @@ import static org.junit.Assert.assertNull;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.math.BigInteger;
 import java.util.List;
 
 import org.jacoco.core.internal.analysis.CounterImpl;
@@ -103,12 +104,12 @@ public class SourceTest {
 			throws IOException {
 		String src = "a\nb\nc";
 		SourceFileCoverageImpl sc = new SourceFileCoverageImpl("Foo", "foo");
-		sc.increment(CounterImpl.getInstance(1, 0), 0, CounterImpl.COUNTER_0_0,
-				1);
-		sc.increment(CounterImpl.getInstance(2, 0), 0, CounterImpl.COUNTER_0_0,
-				2);
-		sc.increment(CounterImpl.getInstance(3, 0), 0, CounterImpl.COUNTER_0_0,
-				3);
+		sc.increment(CounterImpl.getInstance(1, 0), BigInteger.ZERO,
+				CounterImpl.COUNTER_0_0, 1);
+		sc.increment(CounterImpl.getInstance(2, 0), BigInteger.ZERO,
+				CounterImpl.COUNTER_0_0, 2);
+		sc.increment(CounterImpl.getInstance(3, 0), BigInteger.ZERO,
+				CounterImpl.COUNTER_0_0, 3);
 
 		final Source s = new Source(new StringReader(src), sc);
 

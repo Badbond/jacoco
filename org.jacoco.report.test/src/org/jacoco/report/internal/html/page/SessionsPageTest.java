@@ -15,6 +15,7 @@ package org.jacoco.report.internal.html.page;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -105,9 +106,9 @@ public class SessionsPageTest extends PageTestBase {
 	@Test
 	public void testExecutionDataContent() throws Exception {
 		final Collection<ExecutionData> data = new ArrayList<ExecutionData>();
-		data.add(new ExecutionData(0x1000, "ClassB", new int[0]));
-		data.add(new ExecutionData(0x1001, "ClassC", new int[0]));
-		data.add(new ExecutionData(0x1002, "ClassA", new int[0]));
+		data.add(new ExecutionData(0x1000, "ClassB", new BigInteger[0]));
+		data.add(new ExecutionData(0x1001, "ClassC", new BigInteger[0]));
+		data.add(new ExecutionData(0x1002, "ClassA", new BigInteger[0]));
 		index.addClass(new ReportPage(null, rootFolder, context) {
 
 			public String getLinkLabel() {

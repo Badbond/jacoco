@@ -172,7 +172,7 @@ public class ReportElement extends XMLElement {
 		final ReportElement element = element("line");
 		element.attr("nr", nr);
 		counterAttributes(element, "mi", "ci", line.getInstructionCounter());
-		element.attr("ec", line.getExecutionCount());
+		element.attr("ec", line.getExecutionCount().toString());
 		counterAttributes(element, "mb", "cb", line.getBranchCounter());
 	}
 

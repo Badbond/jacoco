@@ -20,6 +20,7 @@ import static org.junit.Assert.fail;
 
 import java.io.ByteArrayInputStream;
 import java.lang.management.ManagementFactory;
+import java.math.BigInteger;
 
 import javax.management.InstanceNotFoundException;
 import javax.management.MBeanServer;
@@ -265,14 +266,14 @@ public class AgentTest implements IExceptionLogger, IAgentOutput {
 	@Test
 	public void reset_should_reset_probes() {
 		Agent agent = createAgent();
-		int[] probes = agent.getData()
+		BigInteger[] probes = agent.getData()
 				.getExecutionData(Long.valueOf(0x12345678), "Foo", 1)
 				.getProbes();
-		probes[0] = 1;
+		probes[0] = BigInteger.ONE;
 
 		agent.reset();
 
-		assertEquals(0, probes[0]);
+		assertEquals(BigInteger.ZERO, probes[0]);
 	}
 
 	@Test
@@ -281,7 +282,7 @@ public class AgentTest implements IExceptionLogger, IAgentOutput {
 		Agent agent = createAgent();
 		agent.startup();
 		agent.getData().getExecutionData(Long.valueOf(0x12345678), "Foo", 1)
-				.getProbes()[0] = 1;
+				.getProbes()[0] = BigInteger.ONE;
 
 		byte[] data = agent.getExecutionData(true);
 
@@ -298,14 +299,14 @@ public class AgentTest implements IExceptionLogger, IAgentOutput {
 			throws Exception {
 		Agent agent = createAgent();
 		agent.startup();
-		final int[] probes = agent.getData()
+		final BigInteger[] probes = agent.getData()
 				.getExecutionData(Long.valueOf(0x12345678), "Foo", 1)
 				.getProbes();
-		probes[0] = 1;
+		probes[0] = BigInteger.ONE;
 
 		agent.getExecutionData(true);
 
-		assertEquals(0, probes[0]);
+		assertEquals(BigInteger.ZERO, probes[0]);
 	}
 
 	@Test
@@ -313,14 +314,14 @@ public class AgentTest implements IExceptionLogger, IAgentOutput {
 			throws Exception {
 		Agent agent = createAgent();
 		agent.startup();
-		final int[] probes = agent.getData()
+		final BigInteger[] probes = agent.getData()
 				.getExecutionData(Long.valueOf(0x12345678), "Foo", 1)
 				.getProbes();
-		probes[0] = 1;
+		probes[0] = BigInteger.ONE;
 
 		agent.getExecutionData(false);
 
-		assertEquals(1, probes[0]);
+		assertEquals(BigInteger.ONE, probes[0]);
 	}
 
 	@Test

@@ -15,6 +15,7 @@ package org.jacoco.core.internal.data;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigInteger;
 
 /**
  * Additional data output methods for compact storage of data structures.
@@ -82,7 +83,7 @@ public class CompactDataOutput extends DataOutputStream {
 	}
 
 	/**
-	 * Writes an integer array. Internally a sequence of int values is packed
+	 * Writes a big integer array. Internally a sequence of values is packed
 	 * into a variable length integer ending with a 0x80 byte.
 	 *
 	 * @param value
@@ -90,10 +91,12 @@ public class CompactDataOutput extends DataOutputStream {
 	 * @throws IOException
 	 *             if thrown by the underlying stream
 	 */
-	public void writeIntegerArray(final int[] value) throws IOException {
+	public void writeBigIntegerArray(final BigInteger[] value)
+			throws IOException {
 		writeVarInt(value.length);
-		for (final int i : value) {
-			writeVarInt(i);
+		for (final BigInteger i : value) {
+			// TODO: Write byte[] instead.
+			writeVarInt(i.intValue());
 		}
 	}
 }

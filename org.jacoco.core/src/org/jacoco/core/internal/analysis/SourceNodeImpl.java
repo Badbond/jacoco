@@ -17,6 +17,8 @@ import org.jacoco.core.analysis.ICounter;
 import org.jacoco.core.analysis.ILine;
 import org.jacoco.core.analysis.ISourceNode;
 
+import java.math.BigInteger;
+
 /**
  * Implementation of {@link ISourceNode}.
  */
@@ -114,8 +116,9 @@ public class SourceNodeImpl extends CoverageNodeImpl implements ISourceNode {
 	 * @param line
 	 *            optional line number or {@link ISourceNode#UNKNOWN_LINE}
 	 */
-	public void increment(final ICounter instructions, final int executions,
-			final ICounter branches, final int line) {
+	public void increment(final ICounter instructions,
+			final BigInteger executions, final ICounter branches,
+			final int line) {
 		if (line != UNKNOWN_LINE) {
 			incrementLine(instructions, executions, branches, line);
 		}
@@ -125,7 +128,8 @@ public class SourceNodeImpl extends CoverageNodeImpl implements ISourceNode {
 	}
 
 	private void incrementLine(final ICounter instructions,
-			final int executions, final ICounter branches, final int line) {
+			final BigInteger executions, final ICounter branches,
+			final int line) {
 		ensureCapacity(line, line);
 		final LineImpl l = getLine(line);
 		final int oldTotal = l.getInstructionCounter().getTotalCount();

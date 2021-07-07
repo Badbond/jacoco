@@ -28,6 +28,8 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.GeneratorAdapter;
 import org.objectweb.asm.commons.Method;
 
+import java.math.BigInteger;
+
 /**
  * Unit tests for {@link OfflineInstrumentationAccessGenerator}.
  */
@@ -35,17 +37,17 @@ public class OfflineInstrumentationAccessGeneratorTest {
 
 	private IExecutionDataAccessorGenerator generator;
 
-	private static int[] probes;
+	private static BigInteger[] probes;
 
 	// runtime stub
-	public static int[] getProbes(final long classid, final String classname,
-			final int probecount) {
+	public static BigInteger[] getProbes(final long classid,
+			final String classname, final int probecount) {
 		return probes;
 	}
 
 	@BeforeClass
 	public static void setupClass() {
-		probes = new int[3];
+		probes = new BigInteger[3];
 	}
 
 	@Before
@@ -146,7 +148,7 @@ public class OfflineInstrumentationAccessGeneratorTest {
 		 *
 		 * @return the probe array
 		 */
-		int[] get();
+		BigInteger[] get();
 
 	}
 

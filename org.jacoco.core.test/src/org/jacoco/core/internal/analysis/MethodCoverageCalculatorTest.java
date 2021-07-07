@@ -14,6 +14,7 @@ package org.jacoco.core.internal.analysis;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -229,7 +230,7 @@ public class MethodCoverageCalculatorTest {
 		Instruction i = new Instruction(line);
 		int idx = 0;
 		for (int branch : branches) {
-			i.addBranch(branch, idx++);
+			i.addBranch(BigInteger.valueOf(branch), idx++);
 		}
 		InsnNode node = new InsnNode(Opcodes.NOP);
 		list.add(node);

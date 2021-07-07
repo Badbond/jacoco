@@ -69,7 +69,7 @@ class ProbeInserter extends MethodVisitor implements IProbeInserter {
 
 	/**
 	 * Insert bytecode (a probe) to increment the position corresponding to the
-	 * given {@code id} in the int[] array
+	 * given {@code id} in the BigInteger[] array
 	 *
 	 * @param id
 	 *            the position to increment
@@ -99,14 +99,16 @@ class ProbeInserter extends MethodVisitor implements IProbeInserter {
 		// Stack[1]: I
 		// Stack[0]: [Ljava/math/BigInteger;
 		// Add BigInteger.ONE on the stack
-		mv.visitFieldInsn(Opcodes.GETSTATIC, "java/math/BigInteger", "ONE", "Ljava/math/BigInteger;");
+		mv.visitFieldInsn(Opcodes.GETSTATIC, "java/math/BigInteger", "ONE",
+				"Ljava/math/BigInteger;");
 
 		// Stack[3]: Ljava/math/BigInteger;
 		// Stack[2]: Ljava/math/BigInteger;
 		// Stack[1]: I
 		// Stack[0]: [Ljava/math/BigInteger;
 		// Increment the value in the array
-		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/math/BigInteger", "ADD", "(L/java/math/BigInteger;)L/java/math/BigInteger;", false);
+		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/math/BigInteger", "ADD",
+				"(L/java/math/BigInteger;)L/java/math/BigInteger;", false);
 
 		// Stack[3]: Ljava/math/BigInteger;
 		// Stack[1]: I

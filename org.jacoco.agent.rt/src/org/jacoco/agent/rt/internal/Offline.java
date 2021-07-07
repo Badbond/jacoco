@@ -12,6 +12,7 @@
  *******************************************************************************/
 package org.jacoco.agent.rt.internal;
 
+import java.math.BigInteger;
 import java.util.Properties;
 
 import org.jacoco.core.runtime.AgentOptions;
@@ -55,8 +56,8 @@ public final class Offline {
 	 *            probe count for this class
 	 * @return probe array instance for this class
 	 */
-	public static int[] getProbes(final long classid, final String classname,
-			final int probecount) {
+	public static BigInteger[] getProbes(final long classid,
+			final String classname, final int probecount) {
 		return getRuntimeData()
 				.getExecutionData(Long.valueOf(classid), classname, probecount)
 				.getProbes();

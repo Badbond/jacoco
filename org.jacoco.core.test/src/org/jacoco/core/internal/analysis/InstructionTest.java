@@ -14,6 +14,7 @@ package org.jacoco.core.internal.analysis;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 
 import org.junit.Before;
@@ -62,47 +63,47 @@ public class InstructionTest {
 	@Test
 	public void addBranchWithInstruction_should_propagate_existing_coverage_status() {
 		final Instruction target = new Instruction(122);
-		target.addBranch(1, 0);
+		target.addBranch(BigInteger.ONE, 0);
 
 		instruction.addBranch(target, 0);
 
 		assertEquals(CounterImpl.COUNTER_0_1,
 				instruction.getInstructionCounter());
-		assertEquals(1, instruction.getExecutionCount());
+		assertEquals(BigInteger.ONE, instruction.getExecutionCount());
 	}
 
 	@Test
 	public void addBranchWithProbe_should_increment_branches_when_covered() {
-		instruction.addBranch(1, 0);
-		instruction.addBranch(1, 1);
+		instruction.addBranch(BigInteger.ONE, 0);
+		instruction.addBranch(BigInteger.ONE, 1);
 
 		assertEquals(CounterImpl.getInstance(0, 1),
 				instruction.getInstructionCounter());
-		assertEquals(2, instruction.getExecutionCount());
+		assertEquals(BigInteger.valueOf(2), instruction.getExecutionCount());
 		assertEquals(CounterImpl.getInstance(0, 2),
 				instruction.getBranchCounter());
 	}
 
 	@Test
 	public void addBranchWithProbe_should_increment_branches_when_not_covered() {
-		instruction.addBranch(0, 0);
-		instruction.addBranch(0, 1);
+		instruction.addBranch(BigInteger.ZERO, 0);
+		instruction.addBranch(BigInteger.ZERO, 1);
 
 		assertEquals(CounterImpl.getInstance(1, 0),
 				instruction.getInstructionCounter());
-		assertEquals(0, instruction.getExecutionCount());
+		assertEquals(BigInteger.ZERO, instruction.getExecutionCount());
 		assertEquals(CounterImpl.getInstance(2, 0),
 				instruction.getBranchCounter());
 	}
 
 	@Test
 	public void addBranchWithProbe_should_increment_branches_when_partly_covered() {
-		instruction.addBranch(0, 0);
-		instruction.addBranch(1, 1);
+		instruction.addBranch(BigInteger.ZERO, 0);
+		instruction.addBranch(BigInteger.ONE, 1);
 
 		assertEquals(CounterImpl.COUNTER_0_1,
 				instruction.getInstructionCounter());
-		assertEquals(1, instruction.getExecutionCount());
+		assertEquals(BigInteger.ONE, instruction.getExecutionCount());
 		assertEquals(CounterImpl.getInstance(1, 1),
 				instruction.getBranchCounter());
 	}
@@ -114,17 +115,17 @@ public class InstructionTest {
 		instruction.addBranch(i1, 3);
 		i1.addBranch(i2, 5);
 
-		i2.addBranch(1, 8);
+		i2.addBranch(BigInteger.ONE, 8);
 
 		assertEquals(CounterImpl.COUNTER_0_1,
 				instruction.getInstructionCounter());
-		assertEquals(1, instruction.getExecutionCount());
+		assertEquals(BigInteger.ONE, instruction.getExecutionCount());
 	}
 
 	@Test
 	public void addBranch_should_count_large_number_of_branches() {
 		for (int branch = 0; branch < 0x1000; branch++) {
-			instruction.addBranch(1, branch);
+			instruction.addBranch(BigInteger.ONE, branch);
 		}
 
 		assertEquals(CounterImpl.getInstance(0, 0x1000),
@@ -139,32 +140,32 @@ public class InstructionTest {
 			next.addBranch(insn, 0);
 			next = insn;
 		}
-		next.addBranch(1, 0);
+		next.addBranch(BigInteger.ONE, 0);
 
 		assertEquals(CounterImpl.COUNTER_0_1,
 				instruction.getInstructionCounter());
-		assertEquals(1, instruction.getExecutionCount());
+		assertEquals(BigInteger.ONE, instruction.getExecutionCount());
 	}
 
 	@Test
 	public void merge_should_calculate_superset_of_covered_branches() {
 		final Instruction i1 = new Instruction(124);
-		i1.addBranch(0, 1);
-		i1.addBranch(0, 2);
-		i1.addBranch(1, 3);
-		i1.addBranch(1, 4);
-		i1.addBranch(2, 5);
+		i1.addBranch(BigInteger.ZERO, 1);
+		i1.addBranch(BigInteger.ZERO, 2);
+		i1.addBranch(BigInteger.ONE, 3);
+		i1.addBranch(BigInteger.ONE, 4);
+		i1.addBranch(BigInteger.valueOf(2), 5);
 		final Instruction i2 = new Instruction(124);
-		i2.addBranch(0, 1);
-		i2.addBranch(1, 2);
-		i2.addBranch(0, 3);
-		i2.addBranch(1, 4);
+		i2.addBranch(BigInteger.ZERO, 1);
+		i2.addBranch(BigInteger.ONE, 2);
+		i2.addBranch(BigInteger.ZERO, 3);
+		i2.addBranch(BigInteger.ONE, 4);
 
 		instruction = i1.merge(i2);
 
 		assertEquals(CounterImpl.getInstance(0, 1),
 				instruction.getInstructionCounter());
-		assertEquals(6, instruction.getExecutionCount());
+		assertEquals(BigInteger.valueOf(6), instruction.getExecutionCount());
 		assertEquals(CounterImpl.getInstance(1, 4),
 				instruction.getBranchCounter());
 	}
@@ -174,15 +175,15 @@ public class InstructionTest {
 		Instruction i1 = new Instruction(1);
 		Instruction i2 = new Instruction(2);
 		Instruction i3 = new Instruction(3);
-		i2.addBranch(1, 0);
-		i3.addBranch(1, 0);
-		i3.addBranch(2, 1);
+		i2.addBranch(BigInteger.ONE, 0);
+		i3.addBranch(BigInteger.ONE, 0);
+		i3.addBranch(BigInteger.valueOf(2), 1);
 
 		instruction = instruction.replaceBranches(Arrays.asList(i1, i2, i3));
 
 		assertEquals(CounterImpl.getInstance(0, 1),
 				instruction.getInstructionCounter());
-		assertEquals(4, instruction.getExecutionCount());
+		assertEquals(BigInteger.valueOf(4), instruction.getExecutionCount());
 		assertEquals(CounterImpl.getInstance(1, 2),
 				instruction.getBranchCounter());
 	}

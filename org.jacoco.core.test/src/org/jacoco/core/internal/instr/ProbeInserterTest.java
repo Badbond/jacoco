@@ -67,10 +67,13 @@ public class ProbeInserterTest {
 		expectedVisitor.visitVarInsn(Opcodes.ALOAD, 0);
 		expectedVisitor.visitInsn(Opcodes.ICONST_0);
 		expectedVisitor.visitInsn(Opcodes.DUP2);
-		expectedVisitor.visitInsn(Opcodes.IALOAD);
-		expectedVisitor.visitInsn(Opcodes.ICONST_1);
-		expectedVisitor.visitInsn(Opcodes.IADD);
-		expectedVisitor.visitInsn(Opcodes.IASTORE);
+		expectedVisitor.visitInsn(Opcodes.AALOAD);
+		expectedVisitor.visitFieldInsn(Opcodes.GETSTATIC,
+				"java/math/BigInteger", "ONE", "Ljava/math/BigInteger;");
+		expectedVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+				"java/math/BigInteger", "ADD",
+				"(L/java/math/BigInteger;)L/java/math/BigInteger;", false);
+		expectedVisitor.visitInsn(Opcodes.AASTORE);
 	}
 
 	@Test
@@ -82,10 +85,13 @@ public class ProbeInserterTest {
 		expectedVisitor.visitVarInsn(Opcodes.ALOAD, 1);
 		expectedVisitor.visitInsn(Opcodes.ICONST_0);
 		expectedVisitor.visitInsn(Opcodes.DUP2);
-		expectedVisitor.visitInsn(Opcodes.IALOAD);
-		expectedVisitor.visitInsn(Opcodes.ICONST_1);
-		expectedVisitor.visitInsn(Opcodes.IADD);
-		expectedVisitor.visitInsn(Opcodes.IASTORE);
+		expectedVisitor.visitInsn(Opcodes.AALOAD);
+		expectedVisitor.visitFieldInsn(Opcodes.GETSTATIC,
+				"java/math/BigInteger", "ONE", "Ljava/math/BigInteger;");
+		expectedVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+				"java/math/BigInteger", "ADD",
+				"(L/java/math/BigInteger;)L/java/math/BigInteger;", false);
+		expectedVisitor.visitInsn(Opcodes.AASTORE);
 	}
 
 	@Test
@@ -97,10 +103,13 @@ public class ProbeInserterTest {
 		expectedVisitor.visitVarInsn(Opcodes.ALOAD, 4);
 		expectedVisitor.visitInsn(Opcodes.ICONST_0);
 		expectedVisitor.visitInsn(Opcodes.DUP2);
-		expectedVisitor.visitInsn(Opcodes.IALOAD);
-		expectedVisitor.visitInsn(Opcodes.ICONST_1);
-		expectedVisitor.visitInsn(Opcodes.IADD);
-		expectedVisitor.visitInsn(Opcodes.IASTORE);
+		expectedVisitor.visitInsn(Opcodes.AALOAD);
+		expectedVisitor.visitFieldInsn(Opcodes.GETSTATIC,
+				"java/math/BigInteger", "ONE", "Ljava/math/BigInteger;");
+		expectedVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+				"java/math/BigInteger", "ADD",
+				"(L/java/math/BigInteger;)L/java/math/BigInteger;", false);
+		expectedVisitor.visitInsn(Opcodes.AASTORE);
 	}
 
 	@Test
@@ -112,10 +121,13 @@ public class ProbeInserterTest {
 		expectedVisitor.visitVarInsn(Opcodes.ALOAD, 5);
 		expectedVisitor.visitInsn(Opcodes.ICONST_0);
 		expectedVisitor.visitInsn(Opcodes.DUP2);
-		expectedVisitor.visitInsn(Opcodes.IALOAD);
-		expectedVisitor.visitInsn(Opcodes.ICONST_1);
-		expectedVisitor.visitInsn(Opcodes.IADD);
-		expectedVisitor.visitInsn(Opcodes.IASTORE);
+		expectedVisitor.visitInsn(Opcodes.AALOAD);
+		expectedVisitor.visitFieldInsn(Opcodes.GETSTATIC,
+				"java/math/BigInteger", "ONE", "Ljava/math/BigInteger;");
+		expectedVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
+				"java/math/BigInteger", "ADD",
+				"(L/java/math/BigInteger;)L/java/math/BigInteger;", false);
+		expectedVisitor.visitInsn(Opcodes.AASTORE);
 	}
 
 	@Test

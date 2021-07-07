@@ -14,6 +14,7 @@ package org.jacoco.core.data;
 
 import static java.lang.String.format;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 
 /**
@@ -27,7 +28,7 @@ public final class ExecutionData {
 
 	private final String name;
 
-	private final int[] probes;
+	private final BigInteger[] probes;
 
 	/**
 	 * Creates a new {@link ExecutionData} object with the given probe data.
@@ -39,7 +40,8 @@ public final class ExecutionData {
 	 * @param probes
 	 *            probe data
 	 */
-	public ExecutionData(final long id, final String name, final int[] probes) {
+	public ExecutionData(final long id, final String name,
+			final BigInteger[] probes) {
 		this.id = id;
 		this.name = name;
 		this.probes = probes;
@@ -60,7 +62,7 @@ public final class ExecutionData {
 			final int probeCount) {
 		this.id = id;
 		this.name = name;
-		this.probes = new int[probeCount];
+		this.probes = new BigInteger[probeCount];
 	}
 
 	/**
@@ -88,7 +90,7 @@ public final class ExecutionData {
 	 *
 	 * @return probe data
 	 */
-	public int[] getProbes() {
+	public BigInteger[] getProbes() {
 		return probes;
 	}
 
@@ -105,8 +107,8 @@ public final class ExecutionData {
 	 * @return <code>true</code>, if at least one probe has been hit
 	 */
 	public boolean hasHits() {
-		for (final int p : probes) {
-			if (p > 0) {
+		for (final BigInteger p : probes) {
+			if (p.signum() == 1) {
 				return true;
 			}
 		}
@@ -158,14 +160,14 @@ public final class ExecutionData {
 	public void merge(final ExecutionData other, final boolean flag) {
 		assertCompatibility(other.getId(), other.getName(),
 				other.getProbes().length);
-		final int[] otherData = other.getProbes();
+		final BigInteger[] otherData = other.getProbes();
 		for (int i = 0; i < probes.length; i++) {
-			int otherProbe = otherData[i];
-			if (otherProbe > 0) {
+			BigInteger otherProbe = otherData[i];
+			if (otherProbe.signum() == 1) {
 				if (flag) {
-					probes[i] += otherProbe;
+					probes[i] = probes[i].add(otherProbe);
 				} else {
-					probes[i] = Math.max(probes[i] - otherProbe, 0);
+					probes[i] = probes[i].max(BigInteger.ZERO);
 				}
 			}
 		}

@@ -15,6 +15,8 @@ package org.jacoco.core.internal.analysis;
 import org.jacoco.core.analysis.ICounter;
 import org.jacoco.core.analysis.IMethodCoverage;
 
+import java.math.BigInteger;
+
 /**
  * Implementation of {@link IMethodCoverage}.
  */
@@ -43,8 +45,9 @@ public class MethodCoverageImpl extends SourceNodeImpl
 	}
 
 	@Override
-	public void increment(final ICounter instructions, final int executions,
-			final ICounter branches, final int line) {
+	public void increment(final ICounter instructions,
+			final BigInteger executions, final ICounter branches,
+			final int line) {
 		super.increment(instructions, executions, branches, line);
 		// Additionally increment complexity counter:
 		if (branches.getTotalCount() > 1) {

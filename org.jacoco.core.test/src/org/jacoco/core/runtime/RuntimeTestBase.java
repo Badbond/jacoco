@@ -24,6 +24,8 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.GeneratorAdapter;
 import org.objectweb.asm.commons.Method;
 
+import java.math.BigInteger;
+
 import static org.junit.Assert.*;
 
 /**
@@ -78,10 +80,10 @@ public abstract class RuntimeTestBase {
 		generateAndInstantiateClass(1001).a();
 		data.collect(storage, storage, false);
 		storage.assertSize(1);
-		final int[] data = storage.getData(1001).getProbes();
+		final BigInteger[] data = storage.getData(1001).getProbes();
 
-		assertEquals(1, data[0]);
-		assertEquals(0, data[1]);
+		assertEquals(BigInteger.ONE, data[0]);
+		assertEquals(BigInteger.ZERO, data[1]);
 	}
 
 	@Test
@@ -91,9 +93,9 @@ public abstract class RuntimeTestBase {
 		generateAndInstantiateClass(1001).b();
 		data.collect(storage, storage, false);
 		storage.assertSize(1);
-		final int[] data = storage.getData(1001).getProbes();
-		assertEquals(1, data[0]);
-		assertEquals(1, data[1]);
+		final BigInteger[] data = storage.getData(1001).getProbes();
+		assertEquals(BigInteger.ONE, data[0]);
+		assertEquals(BigInteger.ONE, data[1]);
 	}
 
 	/**
@@ -136,9 +138,10 @@ public abstract class RuntimeTestBase {
 		gen.visitEnd();
 
 		// get()
-		gen = new GeneratorAdapter(writer.visitMethod(Opcodes.ACC_PUBLIC, "get",
-				"()[I", null, new String[0]), Opcodes.ACC_PUBLIC, "get",
-				"()[I");
+		gen = new GeneratorAdapter(
+				writer.visitMethod(Opcodes.ACC_PUBLIC, "get",
+						"()[Ljava/math/BigInteger;", null, new String[0]),
+				Opcodes.ACC_PUBLIC, "get", "()[Ljava/math/BigInteger;");
 		gen.visitCode();
 		gen.getStatic(classType, InstrSupport.DATAFIELD_NAME,
 				Type.getObjectType(InstrSupport.DATAFIELD_DESC));
@@ -154,7 +157,7 @@ public abstract class RuntimeTestBase {
 				Type.getObjectType(InstrSupport.DATAFIELD_DESC));
 		gen.push(0);
 		gen.push(1);
-		gen.arrayStore(Type.INT_TYPE);
+		gen.arrayStore(Type.getType(BigInteger.class));
 		gen.returnValue();
 		gen.visitMaxs(3, 0);
 		gen.visitEnd();
@@ -167,7 +170,7 @@ public abstract class RuntimeTestBase {
 				Type.getObjectType(InstrSupport.DATAFIELD_DESC));
 		gen.push(1);
 		gen.push(1);
-		gen.arrayStore(Type.INT_TYPE);
+		gen.arrayStore(Type.getType(BigInteger.class));
 		gen.returnValue();
 		gen.visitMaxs(3, 0);
 		gen.visitEnd();
@@ -191,7 +194,7 @@ public abstract class RuntimeTestBase {
 		 *
 		 * @return the probe array
 		 */
-		int[] get();
+		BigInteger[] get();
 
 		/**
 		 * The implementation will mark probe 0 as executed

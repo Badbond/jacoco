@@ -15,6 +15,7 @@ package org.jacoco.core.internal.data;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 
 /**
  * Additional data input methods for compact storage of data structures.
@@ -70,16 +71,17 @@ public class CompactDataInput extends DataInputStream {
 	}
 
 	/**
-	 * Reads an integer array.
+	 * Reads a big integer array.
 	 *
-	 * @return integer array
+	 * @return big integer array
 	 * @throws IOException
 	 *             if thrown by the underlying stream
 	 */
-	public int[] readIntegerArray() throws IOException {
-		final int[] value = new int[readVarInt()];
+	public BigInteger[] readBigIntegerArray() throws IOException {
+		final BigInteger[] value = new BigInteger[readVarInt()];
 		for (int i = 0; i < value.length; i++) {
-			value[i] = readVarInt();
+			// TODO: Read a byte[] instead.
+			value[i] = BigInteger.valueOf(readVarInt());
 		}
 		return value;
 	}

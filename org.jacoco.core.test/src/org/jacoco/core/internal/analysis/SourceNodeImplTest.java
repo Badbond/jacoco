@@ -18,6 +18,8 @@ import org.jacoco.core.analysis.ICoverageNode.ElementType;
 import org.jacoco.core.analysis.ISourceNode;
 import org.junit.Test;
 
+import java.math.BigInteger;
+
 /**
  * Unit tests for {@link SourceNodeImpl}.
  */
@@ -64,7 +66,7 @@ public class SourceNodeImplTest {
 	public void testIncrementLineUnknown() {
 		final SourceNodeImpl node = new SourceNodeImpl(ElementType.CLASS,
 				"Foo");
-		node.increment(CounterImpl.getInstance(1, 2), 2,
+		node.increment(CounterImpl.getInstance(1, 2), BigInteger.valueOf(2),
 				CounterImpl.getInstance(3, 4), ISourceNode.UNKNOWN_LINE);
 		assertEquals(CounterImpl.getInstance(1, 2),
 				node.getInstructionCounter());
@@ -76,9 +78,9 @@ public class SourceNodeImplTest {
 	public void testIncrementLines() {
 		final SourceNodeImpl node = new SourceNodeImpl(ElementType.CLASS,
 				"Foo");
-		node.increment(CounterImpl.getInstance(1, 1), 1,
+		node.increment(CounterImpl.getInstance(1, 1), BigInteger.ONE,
 				CounterImpl.COUNTER_0_0, 10);
-		node.increment(CounterImpl.getInstance(2, 2), 2,
+		node.increment(CounterImpl.getInstance(2, 2), BigInteger.valueOf(2),
 				CounterImpl.COUNTER_0_0, 12);
 
 		assertEquals(CounterImpl.getInstance(1, 1),
@@ -173,10 +175,10 @@ public class SourceNodeImplTest {
 			int expectedMissedLines, int expectedCoveredLines) {
 		final SourceNodeImpl node = new SourceNodeImpl(ElementType.CLASS,
 				"Foo");
-		node.increment(CounterImpl.getInstance(mi1, ci1), ci1,
-				CounterImpl.COUNTER_0_0, 33);
-		node.increment(CounterImpl.getInstance(mi2, ci2), ci2,
-				CounterImpl.COUNTER_0_0, 33);
+		node.increment(CounterImpl.getInstance(mi1, ci1),
+				BigInteger.valueOf(ci1), CounterImpl.COUNTER_0_0, 33);
+		node.increment(CounterImpl.getInstance(mi2, ci2),
+				BigInteger.valueOf(ci2), CounterImpl.COUNTER_0_0, 33);
 		assertEquals(CounterImpl.getInstance(expectedMissedLines,
 				expectedCoveredLines), node.getLineCounter());
 		assertEquals(CounterImpl.getInstance(mi1 + mi2, ci1 + ci2),
@@ -211,7 +213,7 @@ public class SourceNodeImplTest {
 
 		final SourceNodeImpl child = new SourceNodeImpl(ElementType.CLASS,
 				"Foo");
-		child.increment(CounterImpl.getInstance(1, 11), 11,
+		child.increment(CounterImpl.getInstance(1, 11), BigInteger.valueOf(11),
 				CounterImpl.getInstance(3, 33), 5);
 
 		node.increment(child);

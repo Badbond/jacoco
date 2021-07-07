@@ -15,6 +15,7 @@ package org.jacoco.ant;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigInteger;
 
 import org.jacoco.core.data.ExecutionData;
 import org.jacoco.core.data.ExecutionDataWriter;
@@ -39,8 +40,8 @@ public class CreateExecFiles {
 
 		out = new FileOutputStream(BASE_LOCATION + "nomatch.exec");
 		ExecutionDataWriter writer = new ExecutionDataWriter(out);
-		writer.visitClassExecution(
-				new ExecutionData(0, "org/jacoco/ant/TestTarget", new int[0]));
+		writer.visitClassExecution(new ExecutionData(0,
+				"org/jacoco/ant/TestTarget", new BigInteger[0]));
 		out.close();
 	}
 

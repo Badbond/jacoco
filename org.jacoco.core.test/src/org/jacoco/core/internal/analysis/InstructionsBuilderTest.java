@@ -14,6 +14,7 @@ package org.jacoco.core.internal.analysis;
 
 import static org.junit.Assert.assertEquals;
 
+import java.math.BigInteger;
 import java.util.Map;
 
 import org.jacoco.core.analysis.ISourceNode;
@@ -34,7 +35,8 @@ public class InstructionsBuilderTest {
 
 	@Before
 	public void setup() {
-		builder = new InstructionsBuilder(new int[] { 0, 1 });
+		builder = new InstructionsBuilder(
+				new BigInteger[] { BigInteger.ZERO, BigInteger.ONE });
 	}
 
 	@Test

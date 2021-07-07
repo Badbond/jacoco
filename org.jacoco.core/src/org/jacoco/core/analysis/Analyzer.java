@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 import java.util.StringTokenizer;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
@@ -80,7 +81,7 @@ public class Analyzer {
 	private ClassVisitor createAnalyzingVisitor(final long classid,
 			final String className) {
 		final ExecutionData data = executionData.get(classid);
-		final int[] probes;
+		final BigInteger[] probes;
 		final boolean noMatch;
 		if (data == null) {
 			probes = null;

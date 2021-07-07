@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigInteger;
 import java.util.Collections;
 
 import org.jacoco.core.analysis.ICounter;
@@ -119,7 +120,8 @@ public class ClassCoverageImplTest {
 				null);
 		ICounter instructions = covered ? CounterImpl.COUNTER_0_1
 				: CounterImpl.COUNTER_1_0;
-		m.increment(instructions, instructions.getCoveredCount(),
+		m.increment(instructions,
+				BigInteger.valueOf(instructions.getCoveredCount()),
 				CounterImpl.COUNTER_0_0, ISourceNode.UNKNOWN_LINE);
 		m.incrementMethodCounter();
 		return m;

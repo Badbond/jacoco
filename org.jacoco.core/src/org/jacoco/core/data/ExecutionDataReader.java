@@ -16,6 +16,7 @@ import static java.lang.String.format;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigInteger;
 
 import org.jacoco.core.internal.data.CompactDataInput;
 
@@ -147,7 +148,7 @@ public class ExecutionDataReader {
 		}
 		final long id = in.readLong();
 		final String name = in.readUTF();
-		final int[] probes = in.readIntegerArray();
+		final BigInteger[] probes = in.readBigIntegerArray();
 		executionDataVisitor
 				.visitClassExecution(new ExecutionData(id, name, probes));
 	}

@@ -15,6 +15,7 @@ package org.jacoco.cli.internal.commands;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 
 import org.jacoco.cli.internal.CommandTestBase;
 import org.jacoco.core.data.ExecutionData;
@@ -71,8 +72,9 @@ public class ExecInfoTest extends CommandTestBase {
 		final FileOutputStream out = new FileOutputStream(f);
 		final ExecutionDataWriter writer = new ExecutionDataWriter(out);
 		writer.visitSessionInfo(new SessionInfo("testid", 1, 2));
-		writer.visitClassExecution(new ExecutionData(0x1234, "foo/MyClass",
-				new int[] { 0, 1, 1 }));
+		writer.visitClassExecution(
+				new ExecutionData(0x1234, "foo/MyClass", new BigInteger[] {
+						BigInteger.ZERO, BigInteger.ONE, BigInteger.ONE }));
 		out.close();
 		return f;
 	}

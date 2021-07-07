@@ -15,6 +15,7 @@ package org.jacoco.report.internal.html.page;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.math.BigInteger;
 import java.util.Locale;
 
 import org.jacoco.core.analysis.ICounter;
@@ -102,7 +103,7 @@ final class SourceHighlighter {
 			return pre;
 		}
 
-		final int executions = line.getExecutionCount();
+		final BigInteger executions = line.getExecutionCount();
 		final String lineId = "L" + Integer.toString(lineNr);
 		final ICounter branches = line.getBranchCounter();
 		switch (branches.getStatus()) {
@@ -133,8 +134,9 @@ final class SourceHighlighter {
 	}
 
 	private HTMLElement span(final HTMLElement parent, final String id,
-			final String style1, final String style2, final int executions,
-			final String title, final ICounter branches) throws IOException {
+			final String style1, final String style2,
+			final BigInteger executions, final String title,
+			final ICounter branches) throws IOException {
 		final Integer missed = Integer.valueOf(branches.getMissedCount());
 		final Integer total = Integer.valueOf(branches.getTotalCount());
 		final String formattedTitle = String.format(locale, title, missed,

@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -79,8 +80,8 @@ public class MergeTest extends CommandTestBase {
 		File file = new File(tmp.getRoot(), name + ".exec");
 		final FileOutputStream execout = new FileOutputStream(file);
 		ExecutionDataWriter writer = new ExecutionDataWriter(execout);
-		writer.visitClassExecution(
-				new ExecutionData(name.hashCode(), name, new int[] { 1 }));
+		writer.visitClassExecution(new ExecutionData(name.hashCode(), name,
+				new BigInteger[] { BigInteger.ONE }));
 		execout.close();
 		return file;
 	}

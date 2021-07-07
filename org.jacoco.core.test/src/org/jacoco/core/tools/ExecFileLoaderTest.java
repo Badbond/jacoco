@@ -21,6 +21,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.util.List;
 
 import org.jacoco.core.data.ExecutionData;
@@ -119,8 +120,8 @@ public class ExecFileLoaderTest {
 		final FileOutputStream out = new FileOutputStream(file);
 		final ExecutionDataWriter writer = new ExecutionDataWriter(out);
 		final int value = id.length();
-		writer.visitClassExecution(
-				new ExecutionData(value, id, new int[] { 1 }));
+		writer.visitClassExecution(new ExecutionData(value, id,
+				new BigInteger[] { BigInteger.ONE }));
 		writer.visitSessionInfo(new SessionInfo(id, value, value));
 		out.close();
 		return file;
