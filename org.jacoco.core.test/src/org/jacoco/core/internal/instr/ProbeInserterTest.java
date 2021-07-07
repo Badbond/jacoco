@@ -24,6 +24,8 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.TypeReference;
 
+import java.math.BigInteger;
+
 /**
  * Unit tests for {@link ProbeInserter}.
  */
@@ -71,8 +73,8 @@ public class ProbeInserterTest {
 		expectedVisitor.visitFieldInsn(Opcodes.GETSTATIC,
 				"java/math/BigInteger", "ONE", "Ljava/math/BigInteger;");
 		expectedVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-				"java/math/BigInteger", "ADD",
-				"(L/java/math/BigInteger;)L/java/math/BigInteger;", false);
+				"java/math/BigInteger", "add",
+				"(Ljava/math/BigInteger;)Ljava/math/BigInteger;", false);
 		expectedVisitor.visitInsn(Opcodes.AASTORE);
 	}
 
@@ -89,8 +91,8 @@ public class ProbeInserterTest {
 		expectedVisitor.visitFieldInsn(Opcodes.GETSTATIC,
 				"java/math/BigInteger", "ONE", "Ljava/math/BigInteger;");
 		expectedVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-				"java/math/BigInteger", "ADD",
-				"(L/java/math/BigInteger;)L/java/math/BigInteger;", false);
+				"java/math/BigInteger", "add",
+				"(Ljava/math/BigInteger;)Ljava/math/BigInteger;", false);
 		expectedVisitor.visitInsn(Opcodes.AASTORE);
 	}
 
@@ -107,8 +109,8 @@ public class ProbeInserterTest {
 		expectedVisitor.visitFieldInsn(Opcodes.GETSTATIC,
 				"java/math/BigInteger", "ONE", "Ljava/math/BigInteger;");
 		expectedVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-				"java/math/BigInteger", "ADD",
-				"(L/java/math/BigInteger;)L/java/math/BigInteger;", false);
+				"java/math/BigInteger", "add",
+				"(Ljava/math/BigInteger;)Ljava/math/BigInteger;", false);
 		expectedVisitor.visitInsn(Opcodes.AASTORE);
 	}
 
@@ -125,8 +127,8 @@ public class ProbeInserterTest {
 		expectedVisitor.visitFieldInsn(Opcodes.GETSTATIC,
 				"java/math/BigInteger", "ONE", "Ljava/math/BigInteger;");
 		expectedVisitor.visitMethodInsn(Opcodes.INVOKEVIRTUAL,
-				"java/math/BigInteger", "ADD",
-				"(L/java/math/BigInteger;)L/java/math/BigInteger;", false);
+				"java/math/BigInteger", "add",
+				"(Ljava/math/BigInteger;)Ljava/math/BigInteger;", false);
 		expectedVisitor.visitInsn(Opcodes.AASTORE);
 	}
 

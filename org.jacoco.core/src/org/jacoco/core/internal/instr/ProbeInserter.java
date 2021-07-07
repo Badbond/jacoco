@@ -75,7 +75,7 @@ class ProbeInserter extends MethodVisitor implements IProbeInserter {
 	 *            the position to increment
 	 */
 	public void insertProbe(final int id) {
-		// Retrieve the int[] containing coverage information
+		// Retrieve the BigInteger[] containing coverage information
 		mv.visitVarInsn(Opcodes.ALOAD, variable);
 
 		// Stack[0]: [Ljava/math/BigInteger;
@@ -84,33 +84,41 @@ class ProbeInserter extends MethodVisitor implements IProbeInserter {
 
 		// Stack[1]: I
 		// Stack[0]: [Ljava/math/BigInteger;
-		// Duplicate the top two stack items as we want to do both lookup and
-		// storage.
-		mv.visitInsn(Opcodes.DUP2);
+		// Add BigInteger.ONE on the stack
+		mv.visitFieldInsn(Opcodes.GETSTATIC, "java/math/BigInteger", "ONE",
+				"Ljava/math/BigInteger;");
 
-		// Stack[3]: I
-		// Stack[2]: [Ljava/math/BigInteger;
+		// Stack[2]: Ljava/math/BigInteger;
+		// Stack[1]: I
+		// Stack[0]: [Ljava/math/BigInteger;
+		// Retrieve the BigInteger[] containing coverage information
+		mv.visitVarInsn(Opcodes.ALOAD, variable);
+
+		// Stack[3]: [Ljava/math/BigInteger;
+		// Stack[2]: Ljava/math/BigInteger;
+		// Stack[1]: I
+		// Stack[0]: [Ljava/math/BigInteger;
+		// Pushes the index of the array we want to retrieve on the stack
+		InstrSupport.push(mv, id);
+
+		// Stack[4]: I
+		// Stack[3]: [Ljava/math/BigInteger;
+		// Stack[2]: Ljava/math/BigInteger;
 		// Stack[1]: I
 		// Stack[0]: [Ljava/math/BigInteger;
 		// Lookup a value from an integer array
 		mv.visitInsn(Opcodes.AALOAD);
 
-		// Stack[2]: Ljava/math/BigInteger;
-		// Stack[1]: I
-		// Stack[0]: [Ljava/math/BigInteger;
-		// Add BigInteger.ONE on the stack
-		mv.visitFieldInsn(Opcodes.GETSTATIC, "java/math/BigInteger", "ONE",
-				"Ljava/math/BigInteger;");
 
 		// Stack[3]: Ljava/math/BigInteger;
 		// Stack[2]: Ljava/math/BigInteger;
 		// Stack[1]: I
 		// Stack[0]: [Ljava/math/BigInteger;
-		// Increment the value in the array
-		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/math/BigInteger", "ADD",
-				"(L/java/math/BigInteger;)L/java/math/BigInteger;", false);
+		// Add the two big integers
+		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/math/BigInteger", "add",
+				"(Ljava/math/BigInteger;)Ljava/math/BigInteger;", false);
 
-		// Stack[3]: Ljava/math/BigInteger;
+		// Stack[2]: Ljava/math/BigInteger;
 		// Stack[1]: I
 		// Stack[0]: [Ljava/math/BigInteger;
 		// Store the summed value in the integer array at the index which we
