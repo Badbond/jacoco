@@ -81,4 +81,18 @@ public class CompactDataOutput extends DataOutputStream {
 		}
 	}
 
+	/**
+	 * Writes a long array.
+	 *
+	 * @param value
+	 *            long array
+	 * @throws IOException
+	 *             if thrown by the underlying stream
+	 */
+	public void writeLongArray(final long[] value) throws IOException {
+		writeVarInt(value.length);
+		for (final long i : value) {
+			writeLong(i);
+		}
+	}
 }
