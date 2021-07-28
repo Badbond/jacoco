@@ -21,9 +21,9 @@ import org.objectweb.asm.TypePath;
 
 /**
  * Internal utility to add probes into the control flow of a method. The code
- * for a probe simply sets a certain slot of a boolean array to true. In
- * addition the probe array has to be retrieved at the beginning of the method
- * and stored in a local variable.
+ * for a probe simply increments a certain slot of the int array. In addition
+ * the probe array has to be retrieved at the beginning of the method and stored
+ * in a local variable.
  */
 class ProbeInserter extends MethodVisitor implements IProbeInserter {
 
@@ -68,27 +68,63 @@ class ProbeInserter extends MethodVisitor implements IProbeInserter {
 		variable = pos;
 	}
 
+	/**
+	 * Inserts bytecode (a probe) to increment the position corresponding to the
+	 * given {@code id} in the BigInteger[] array.
+	 *
+	 * @param id
+	 *            the position to increment
+	 */
 	public void insertProbe(final int id) {
-
-		// For a probe we set the corresponding position in the boolean[] array
-		// to true.
-
+		// Retrieve the BigInteger[] containing coverage information
 		mv.visitVarInsn(Opcodes.ALOAD, variable);
 
-		// Stack[0]: [Z
-
+		// Stack[0]: [Ljava/math/BigInteger;
+		// Push the index of the array we want to retrieve onto the stack.
 		InstrSupport.push(mv, id);
 
 		// Stack[1]: I
-		// Stack[0]: [Z
+		// Stack[0]: [Ljava/math/BigInteger;
+		// Add 1 onto the stack.
+		mv.visitFieldInsn(Opcodes.GETSTATIC, "java/math/BigInteger", "ONE",
+				"Ljava/math/BigInteger;");
 
-		mv.visitInsn(Opcodes.ICONST_1);
-
-		// Stack[2]: I
+		// Stack[2]: Ljava/math/BigInteger;
 		// Stack[1]: I
-		// Stack[0]: [Z
+		// Stack[0]: [Ljava/math/BigInteger;
+		// Retrieve the value from the array.
+		mv.visitVarInsn(Opcodes.ALOAD, variable);
 
-		mv.visitInsn(Opcodes.BASTORE);
+		// Stack[3]: [Ljava/math/BigInteger;
+		// Stack[2]: Ljava/math/BigInteger;
+		// Stack[1]: I
+		// Stack[0]: [Ljava/math/BigInteger;
+		// Push the index of the array we want to retrieve onto the stack.
+		InstrSupport.push(mv, id);
+
+		// Stack[4]: I
+		// Stack[3]: [Ljava/math/BigInteger;
+		// Stack[2]: Ljava/math/BigInteger;
+		// Stack[1]: I
+		// Stack[0]: [Ljava/math/BigInteger;
+		// Retrieve the value from the array.
+		mv.visitInsn(Opcodes.AALOAD);
+
+
+		// Stack[3]: Ljava/math/BigInteger;
+		// Stack[2]: Ljava/math/BigInteger;
+		// Stack[1]: I
+		// Stack[0]: [Ljava/math/BigInteger;
+		// Increment the BigInteger on the stack.
+		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/math/BigInteger", "add",
+				"(Ljava/math/BigInteger;)Ljava/math/BigInteger;", false);
+
+		// Stack[2]: Ljava/math/BigInteger;
+		// Stack[1]: I
+		// Stack[0]: [Ljava/math/BigInteger;
+		               // Store the incremented value in the integer array at the index which
+               // we already had on the stack.
+		mv.visitInsn(Opcodes.AASTORE);
 	}
 
 	@Override
@@ -128,11 +164,11 @@ class ProbeInserter extends MethodVisitor implements IProbeInserter {
 
 	@Override
 	public void visitMaxs(final int maxStack, final int maxLocals) {
-		// Max stack size of the probe code is 3 which can add to the
+		// Max stack size of the probe code is 4 which can add to the
 		// original stack size depending on the probe locations. The accessor
 		// stack size is an absolute maximum, as the accessor code is inserted
 		// at the very beginning of each method when the stack size is empty.
-		final int increasedStack = Math.max(maxStack + 3, accessorStackSize);
+		final int increasedStack = Math.max(maxStack + 6, accessorStackSize);
 		mv.visitMaxs(increasedStack, maxLocals + 1);
 	}
 

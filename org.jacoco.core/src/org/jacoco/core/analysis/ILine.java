@@ -12,6 +12,8 @@
  *******************************************************************************/
 package org.jacoco.core.analysis;
 
+import java.math.BigInteger;
+
 /**
  * The instruction and branch coverage of a single source line is described by
  * this interface.
@@ -45,4 +47,10 @@ public interface ILine {
 	 */
 	int getStatus();
 
+	/**
+	 * Returns the execution count for this line
+	 *
+	 * @return execution count
+	 */
+	BigInteger getExecutionCount();
 }

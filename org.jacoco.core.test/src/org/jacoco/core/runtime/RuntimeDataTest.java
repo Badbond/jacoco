@@ -18,6 +18,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigInteger;
 import java.util.concurrent.Callable;
 
 import org.jacoco.core.test.TargetLoader;
@@ -56,14 +57,14 @@ public class RuntimeDataTest {
 				Integer.valueOf(3) };
 		data.equals(args);
 
-		assertEquals(3, ((boolean[]) args[0]).length);
+		assertEquals(3, ((BigInteger[]) args[0]).length);
 
 		data.collect(storage, storage, false);
-		boolean[] data = (boolean[]) args[0];
+		BigInteger[] data = (BigInteger[]) args[0];
 		assertEquals(3, data.length, 0.0);
-		assertFalse(data[0]);
-		assertFalse(data[1]);
-		assertFalse(data[2]);
+		assertEquals(BigInteger.ZERO, data[0]);
+		assertEquals(BigInteger.ZERO, data[1]);
+		assertEquals(BigInteger.ZERO, data[2]);
 		assertSame(storage.getData(123).getProbes(), data);
 		assertEquals("Foo", storage.getData(123).getName());
 	}
@@ -77,26 +78,26 @@ public class RuntimeDataTest {
 	@Test
 	public void testCollectWithReset() {
 		data.setSessionId("testsession");
-		boolean[] probes = data.getExecutionData(Long.valueOf(123), "Foo", 1)
+		BigInteger[] probes = data.getExecutionData(Long.valueOf(123), "Foo", 1)
 				.getProbes();
-		probes[0] = true;
+		probes[0] = BigInteger.ONE;
 
 		data.collect(storage, storage, true);
 
-		assertFalse(probes[0]);
+		assertEquals(BigInteger.ZERO, probes[0]);
 		assertEquals("testsession", storage.getSessionInfo().getId());
 	}
 
 	@Test
 	public void testCollectWithoutReset() {
 		data.setSessionId("testsession");
-		boolean[] probes = data.getExecutionData(Long.valueOf(123), "Foo", 1)
+		BigInteger[] probes = data.getExecutionData(Long.valueOf(123), "Foo", 1)
 				.getProbes();
-		probes[0] = true;
+		probes[0] = BigInteger.ONE;
 
 		data.collect(storage, storage, false);
 
-		assertTrue(probes[0]);
+		assertEquals(BigInteger.ONE, probes[0]);
 		assertEquals("testsession", storage.getSessionInfo().getId());
 	}
 
@@ -150,7 +151,7 @@ public class RuntimeDataTest {
 
 	@Test
 	public void testGenerateAccessCall() throws Exception {
-		final boolean[] probes = data
+		final BigInteger[] probes = data
 				.getExecutionData(Long.valueOf(1234), "Sample", 5).getProbes();
 
 		final ClassWriter writer = new ClassWriter(0);

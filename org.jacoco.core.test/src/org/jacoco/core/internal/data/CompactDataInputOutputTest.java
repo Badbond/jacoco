@@ -17,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.math.BigInteger;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -113,6 +114,33 @@ public class CompactDataInputOutputTest {
 		for (int i = 0; i < values.length; i++) {
 			assertEquals("Index " + i, Boolean.valueOf(values[i]),
 					Boolean.valueOf(actual[i]));
+		}
+	}
+
+	@Test
+	public void testBigIntArrayEmpty() throws IOException {
+		testBigIntArray();
+	}
+
+	@Test
+	public void testBigIntArray0x08() throws IOException {
+		testBigIntArray(BigInteger.valueOf(8));
+	}
+
+	@Test
+	public void testIntArray() throws IOException {
+		testBigIntArray(BigInteger.ZERO, BigInteger.ONE,
+				BigInteger.valueOf(300), BigInteger.valueOf(Integer.MAX_VALUE),
+				BigInteger.valueOf(Long.MAX_VALUE),
+				BigInteger.valueOf(Long.MAX_VALUE).add(BigInteger.TEN));
+	}
+
+	private void testBigIntArray(BigInteger... values) throws IOException {
+		out.writeBigIntegerArray(values);
+		out.close();
+		final BigInteger[] actual = in.readBigIntegerArray();
+		for (int i = 0; i < values.length; i++) {
+			assertEquals("Index " + i, values[i], actual[i]);
 		}
 	}
 

@@ -18,6 +18,7 @@ import static org.jacoco.examples.ConsoleOutput.containsLine;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigInteger;
 
 import org.jacoco.core.data.ExecutionData;
 import org.jacoco.core.data.ExecutionDataWriter;
@@ -54,7 +55,8 @@ public class ExecDumpTest {
 		final ExecutionDataWriter writer = new ExecutionDataWriter(out);
 		writer.visitSessionInfo(new SessionInfo("testid", 1, 2));
 		writer.visitClassExecution(new ExecutionData(0x1234, "foo/MyClass",
-				new boolean[] { false, true, true }));
+				new BigInteger[] { BigInteger.ZERO, BigInteger.ONE,
+						BigInteger.valueOf(2) }));
 		writer.flush();
 		out.close();
 		return f.getPath();

@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -82,10 +83,10 @@ public class ExecInfo extends Command {
 		out.println();
 	}
 
-	private int getHitCount(final boolean[] data) {
+	private int getHitCount(final BigInteger[] data) {
 		int count = 0;
-		for (final boolean hit : data) {
-			if (hit) {
+		for (final BigInteger hit : data) {
+			if (hit.signum() == 1) {
 				count++;
 			}
 		}

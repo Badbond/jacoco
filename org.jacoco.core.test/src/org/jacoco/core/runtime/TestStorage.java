@@ -15,6 +15,7 @@ package org.jacoco.core.runtime;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,7 +42,7 @@ class TestStorage implements IExecutionDataVisitor, ISessionInfoVisitor {
 		return info;
 	}
 
-	public void assertData(long classId, boolean[] expected) {
+	public void assertData(long classId, BigInteger[] expected) {
 		assertSame(expected, getData(classId).getProbes());
 	}
 

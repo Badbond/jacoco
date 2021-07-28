@@ -28,6 +28,8 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.GeneratorAdapter;
 import org.objectweb.asm.commons.Method;
 
+import java.math.BigInteger;
+
 /**
  * Unit tests for {@link OfflineInstrumentationAccessGenerator}.
  */
@@ -35,17 +37,17 @@ public class OfflineInstrumentationAccessGeneratorTest {
 
 	private IExecutionDataAccessorGenerator generator;
 
-	private static boolean[] probes;
+	private static BigInteger[] probes;
 
 	// runtime stub
-	public static boolean[] getProbes(final long classid,
+	public static BigInteger[] getProbes(final long classid,
 			final String classname, final int probecount) {
 		return probes;
 	}
 
 	@BeforeClass
 	public static void setupClass() {
-		probes = new boolean[3];
+		probes = new BigInteger[3];
 	}
 
 	@Before
@@ -73,7 +75,7 @@ public class OfflineInstrumentationAccessGeneratorTest {
 		expected.getVisitor().visitIntInsn(Opcodes.BIPUSH, 17);
 		String rtname = JaCoCo.RUNTIMEPACKAGE.replace('.', '/') + "/Offline";
 		expected.getVisitor().visitMethodInsn(Opcodes.INVOKESTATIC, rtname,
-				"getProbes", "(JLjava/lang/String;I)[Z", false);
+				"getProbes", "(JLjava/lang/String;I)[I", false);
 
 		assertEquals(expected, actual);
 	}
@@ -119,8 +121,8 @@ public class OfflineInstrumentationAccessGeneratorTest {
 
 		// get()
 		gen = new GeneratorAdapter(writer.visitMethod(Opcodes.ACC_PUBLIC, "get",
-				"()[Z", null, new String[0]), Opcodes.ACC_PUBLIC, "get",
-				"()[Z");
+				"()[I", null, new String[0]), Opcodes.ACC_PUBLIC, "get",
+				"()[I");
 		gen.visitCode();
 		gen.getStatic(classType, InstrSupport.DATAFIELD_NAME,
 				Type.getObjectType(InstrSupport.DATAFIELD_DESC));
@@ -146,7 +148,7 @@ public class OfflineInstrumentationAccessGeneratorTest {
 		 *
 		 * @return the probe array
 		 */
-		boolean[] get();
+		BigInteger[] get();
 
 	}
 

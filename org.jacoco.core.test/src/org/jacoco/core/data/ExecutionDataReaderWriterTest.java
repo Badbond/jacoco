@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -72,7 +73,7 @@ public class ExecutionDataReaderWriterTest {
 
 	@Test
 	public void testFlush() throws IOException {
-		final boolean[] flushCalled = new boolean[] { false };
+		final BigInteger[] flushCalled = new BigInteger[] { BigInteger.ZERO };
 		final OutputStream out = new OutputStream() {
 			@Override
 			public void write(int b) throws IOException {
@@ -80,11 +81,11 @@ public class ExecutionDataReaderWriterTest {
 
 			@Override
 			public void flush() throws IOException {
-				flushCalled[0] = true;
+				flushCalled[0] = BigInteger.ONE;
 			}
 		};
 		new ExecutionDataWriter(out).flush();
-		assertTrue(flushCalled[0]);
+		assertEquals(BigInteger.ONE, flushCalled[0]);
 	}
 
 	@Test
@@ -200,16 +201,16 @@ public class ExecutionDataReaderWriterTest {
 
 	@Test(expected = RuntimeException.class)
 	public void testSessionInfoIOException() throws IOException {
-		final boolean[] broken = new boolean[1];
+		final BigInteger[] broken = new BigInteger[1];
 		final ExecutionDataWriter writer = createWriter(new OutputStream() {
 			@Override
 			public void write(int b) throws IOException {
-				if (broken[0]) {
+				if (broken[0].signum() == 1) {
 					throw new IOException();
 				}
 			}
 		});
-		broken[0] = true;
+		broken[0] = BigInteger.ONE;
 		writer.visitSessionInfo(new SessionInfo("X", 0, 0));
 	}
 
@@ -224,7 +225,7 @@ public class ExecutionDataReaderWriterTest {
 
 	@Test
 	public void testMinClassId() throws IOException {
-		final boolean[] data = createData(8);
+		final BigInteger[] data = createData(8);
 		writer.visitClassExecution(
 				new ExecutionData(Long.MIN_VALUE, "Sample", data));
 		assertFalse(createReaderWithVisitors().read());
@@ -233,7 +234,7 @@ public class ExecutionDataReaderWriterTest {
 
 	@Test
 	public void testMaxClassId() throws IOException {
-		final boolean[] data = createData(8);
+		final BigInteger[] data = createData(8);
 		writer.visitClassExecution(
 				new ExecutionData(Long.MAX_VALUE, "Sample", data));
 		assertFalse(createReaderWithVisitors().read());
@@ -242,7 +243,7 @@ public class ExecutionDataReaderWriterTest {
 
 	@Test
 	public void testEmptyClass() throws IOException {
-		final boolean[] data = createData(0);
+		final BigInteger[] data = createData(0);
 		writer.visitClassExecution(new ExecutionData(3, "Sample", data));
 		assertFalse(createReaderWithVisitors().read());
 		assertTrue(store.getContents().isEmpty());
@@ -250,7 +251,8 @@ public class ExecutionDataReaderWriterTest {
 
 	@Test
 	public void testNoHitClass() throws IOException {
-		final boolean[] data = new boolean[] { false, false, false };
+		final BigInteger[] data = new BigInteger[] { BigInteger.ZERO,
+				BigInteger.ZERO, BigInteger.ZERO };
 		writer.visitClassExecution(new ExecutionData(3, "Sample", data));
 		assertFalse(createReaderWithVisitors().read());
 		assertTrue(store.getContents().isEmpty());
@@ -258,7 +260,7 @@ public class ExecutionDataReaderWriterTest {
 
 	@Test
 	public void testOneClass() throws IOException {
-		final boolean[] data = createData(15);
+		final BigInteger[] data = createData(15);
 		writer.visitClassExecution(new ExecutionData(3, "Sample", data));
 		assertFalse(createReaderWithVisitors().read());
 		assertArrayEquals(data, store.get(3).getProbes());
@@ -266,8 +268,8 @@ public class ExecutionDataReaderWriterTest {
 
 	@Test
 	public void testTwoClasses() throws IOException {
-		final boolean[] data1 = createData(15);
-		final boolean[] data2 = createData(185);
+		final BigInteger[] data1 = createData(15);
+		final BigInteger[] data2 = createData(185);
 		writer.visitClassExecution(new ExecutionData(333, "Sample", data1));
 		writer.visitClassExecution(new ExecutionData(-45, "Sample", data2));
 		assertFalse(createReaderWithVisitors().read());
@@ -277,7 +279,7 @@ public class ExecutionDataReaderWriterTest {
 
 	@Test
 	public void testBigClass() throws IOException {
-		final boolean[] data = createData(3599);
+		final BigInteger[] data = createData(3599);
 		writer.visitClassExecution(new ExecutionData(123, "Sample", data));
 		assertFalse(createReaderWithVisitors().read());
 		assertArrayEquals(data, store.get(123).getProbes());
@@ -285,18 +287,18 @@ public class ExecutionDataReaderWriterTest {
 
 	@Test(expected = RuntimeException.class)
 	public void testExecutionDataIOException() throws IOException {
-		final boolean[] broken = new boolean[1];
+		final BigInteger[] broken = new BigInteger[1];
 		final ExecutionDataWriter writer = createWriter(new OutputStream() {
 			@Override
 			public void write(int b) throws IOException {
-				if (broken[0]) {
+				if (broken[0].signum() == 1) {
 					throw new IOException();
 				}
 			}
 		});
-		broken[0] = true;
-		writer.visitClassExecution(
-				new ExecutionData(3, "Sample", createData(1)));
+		broken[0] = BigInteger.ONE;
+		writer.visitClassExecution(new ExecutionData(3, "Sample",
+				new BigInteger[] { BigInteger.ONE }));
 	}
 
 	private ExecutionDataReader createReaderWithVisitors() throws IOException {
@@ -310,16 +312,16 @@ public class ExecutionDataReaderWriterTest {
 		return reader;
 	}
 
-	private boolean[] createData(final int probeCount) {
-		final boolean[] data = new boolean[probeCount];
+	private BigInteger[] createData(final int probeCount) {
+		final BigInteger[] data = new BigInteger[probeCount];
 		for (int j = 0; j < data.length; j++) {
-			data[j] = random.nextBoolean();
+			data[j] = BigInteger.valueOf(random.nextLong());
 		}
 		return data;
 	}
 
-	private void assertArrayEquals(final boolean[] expected,
-			final boolean[] actual) {
+	private void assertArrayEquals(final BigInteger[] expected,
+			final BigInteger[] actual) {
 		assertTrue(Arrays.equals(expected, actual));
 	}
 

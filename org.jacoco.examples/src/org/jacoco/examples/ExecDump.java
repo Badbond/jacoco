@@ -15,6 +15,7 @@ package org.jacoco.examples;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.Date;
 
 import org.jacoco.core.data.ExecutionData;
@@ -82,10 +83,10 @@ public final class ExecDump {
 		out.println();
 	}
 
-	private int getHitCount(final boolean[] data) {
+	private int getHitCount(final BigInteger[] data) {
 		int count = 0;
-		for (final boolean hit : data) {
-			if (hit) {
+		for (final BigInteger hit : data) {
+			if (hit.signum() == 1) {
 				count++;
 			}
 		}

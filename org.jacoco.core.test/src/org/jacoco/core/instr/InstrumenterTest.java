@@ -81,7 +81,7 @@ public class InstrumenterTest {
 				final MethodVisitor mv) {
 			this.classId = classId;
 			InstrSupport.push(mv, probeCount);
-			mv.visitIntInsn(Opcodes.NEWARRAY, Opcodes.T_BOOLEAN);
+			mv.visitTypeInsn(Opcodes.ANEWARRAY, "java/math/BigInteger");
 			return 1;
 		}
 

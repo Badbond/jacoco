@@ -17,8 +17,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigInteger;
 import java.util.Collections;
 
+import org.jacoco.core.analysis.ICounter;
 import org.jacoco.core.analysis.ICoverageNode;
 import org.jacoco.core.analysis.ISourceNode;
 import org.junit.Before;
@@ -116,7 +118,10 @@ public class ClassCoverageImplTest {
 	private MethodCoverageImpl createMethod(boolean covered) {
 		final MethodCoverageImpl m = new MethodCoverageImpl("sample", "()V",
 				null);
-		m.increment(covered ? CounterImpl.COUNTER_0_1 : CounterImpl.COUNTER_1_0,
+		ICounter instructions = covered ? CounterImpl.COUNTER_0_1
+				: CounterImpl.COUNTER_1_0;
+		m.increment(instructions,
+				BigInteger.valueOf(instructions.getCoveredCount()),
 				CounterImpl.COUNTER_0_0, ISourceNode.UNKNOWN_LINE);
 		m.incrementMethodCounter();
 		return m;

@@ -16,6 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.math.BigInteger;
 
 import org.jacoco.cli.internal.CommandTestBase;
 import org.jacoco.core.data.ExecutionData;
@@ -69,7 +70,7 @@ public class ReportTest extends CommandTestBase {
 		// Add probably invalid id for this test class:
 		writer.visitClassExecution(
 				new ExecutionData(0x123, getClass().getName().replace('.', '/'),
-						new boolean[] { true }));
+						new BigInteger[] { BigInteger.ONE }));
 		execout.close();
 
 		execute("report", exec.getAbsolutePath(), "--classfiles",
